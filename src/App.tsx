@@ -29,7 +29,7 @@ type Profile = {
   status: "active" | "inactive";
 };
 
-export default function App() {
+// BCS authenticated application shell and module routing.\nexport default function App() {
   const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [authReady, setAuthReady] = useState(!supabase);
