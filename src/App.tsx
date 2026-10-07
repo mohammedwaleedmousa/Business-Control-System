@@ -12,6 +12,9 @@ import { DevicesPage } from "./components/DevicesPage";
 import { BitwardenRefsPage } from "./components/BitwardenRefsPage";
 import { DashboardPage } from "./components/DashboardPage";
 import { BusinessesPage } from "./components/BusinessesPage";
+import { UsersPage } from "./components/UsersPage";
+import { ActivityPage } from "./components/ActivityPage";
+import { SettingsPage } from "./components/SettingsPage";
 
 type Business = { id: string; name: string; slug: string; code: string; status: "active" | "inactive" };
 type Profile = { id: string; full_name: string | null; role: "admin" | "manager" | "operator" | "viewer"; status: "active" | "inactive" };
@@ -86,5 +89,8 @@ export default function App() {
   if (currentRoute.path === "/devices") return shell(<DevicesPage canManage={profile.role === "admin"} />);
   if (currentRoute.path === "/bitwarden") return shell(<BitwardenRefsPage />);
   if (currentRoute.path === "/assets") return shell(<DigitalAssetsPage canManage={profile.role === "admin"} />);
+  if (currentRoute.path === "/users") return shell(<UsersPage />);
+  if (currentRoute.path === "/activity") return shell(<ActivityPage />);
+  if (currentRoute.path === "/settings") return shell(<SettingsPage />);
   return shell(<PagePlaceholder title={currentRoute.label} description="BCS operational controls are being connected to this workspace." />);
 }
