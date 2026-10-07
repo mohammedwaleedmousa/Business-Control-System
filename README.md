@@ -82,13 +82,14 @@ Phase 1 completion requires:
 - Credential reveal authorization verification
 - Final diff review for unrelated changes
 
-## Phase 2 — Company iPhone management
+## Phase 2 — Company iPhone app inventory and review
 
-Phase 2 is being scoped on branch `phase-2-device-management`. It will integrate an Apple-compatible mobile device management (MDM) provider for device policy and supported telemetry, then display verified updates in BCS. BCS cannot independently monitor unmanaged iPhones, and standard MDM does not guarantee the currently foregrounded app or the active account inside Instagram.
+Phase 2 is being developed on branch `phase-2-device-management`. It adds a **third independent top-level page**, `إدارة تطبيقات الآيفون`, alongside Company iPhones and Social Media Accounts. The page uses shared `device_id` and `business_id` relations to show each app inventory/review with its existing phone, responsible employee, and company; device and employee details are not re-entered or duplicated. It will integrate an Apple-compatible mobile device management (MDM) provider only after provider and security verification. BCS cannot independently monitor unmanaged iPhones, and standard MDM does not guarantee the currently foregrounded app or the active account inside Instagram.
 
 - [x] Document Apple capability limits, target architecture, privacy controls, and safe enrollment prerequisites.
 - [ ] Select and verify an MDM provider and its API capabilities. Orchard MDM is a candidate for evaluation only, not yet approved.
-- [ ] Implement app inventory comparison against an approved-app list and an administrator review workflow (new → under review → discussed → closed).
+- [x] Add a separate top-level app inventory/review page, approved-app list, and administrator review workflow UI (new → under review → discussed → closed); database migration is created but not applied.
+- [x] Link inventory and review rows to existing company, phone, and responsible-employee records through shared IDs; no duplicated device records.
 - [ ] Audit existing iPhones and approve a data-preserving enrollment plan before changing devices.
 - [ ] Implement server-side provider integration, tenant-scoped authorization, and verified telemetry ingestion.
 - [ ] Implement automatic dashboard updates and stale-data indicators.
@@ -101,7 +102,7 @@ No MDM provider is connected and no actual device monitoring or blocking policy 
 
 ## Current status
 
-Phase 1 remains the existing two-module scope. Phase 2 planning is documented on branch `phase-2-device-management`; no Phase 1 features were intentionally changed.
+Phase 1 remains the existing two-module scope. Phase 2 adds a third independent page on branch `phase-2-device-management`; the live MDM integration and migration application remain pending. No Phase 1 features were intentionally changed.
 
 ### MDM provider review — 2026-10-07
 
