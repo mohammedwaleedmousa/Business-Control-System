@@ -12,6 +12,7 @@ import { SocialPlatformsPage } from "./components/SocialPlatformsPage";
 import { DevicesPage } from "./components/DevicesPage";
 import { BitwardenRefsPage } from "./components/BitwardenRefsPage";
 import { DashboardPage } from "./components/DashboardPage";
+import { BusinessesPage } from "./components/BusinessesPage";
 
 type Business = {
   id: string;
@@ -163,6 +164,16 @@ export default function App() {
           ))}
         </nav>
         <DashboardPage />
+      </AppShell>
+    );
+  }
+
+  if (currentRoute.path === "/businesses") {
+    return (
+      <AppShell>
+        <div className="session-bar"><span>{profile.full_name || session.user.email}</span><span>{profile.role}</span><button type="button" onClick={() => supabase?.auth.signOut()}>Sign out</button></div>
+        <nav className="navigation" aria-label="Primary">{routes.map((route) => <button key={route.path} type="button" className={route.path === currentRoute.path ? "nav-item active" : "nav-item"} onClick={() => navigate(route.path)}>{route.label}</button>)}</nav>
+        <BusinessesPage canManage={profile.role === "admin"} />
       </AppShell>
     );
   }
