@@ -65,14 +65,14 @@ export default function App() {
     </AppShell>
   );
 
-  if (!authReady) return shell(<div className="loading-state">Loading authentication…</div>);
+  if (!authReady) return shell(<div className="loading-state">جارٍ التحقق من تسجيل الدخول…</div>);
   if (!session) return shell(<AuthScreen />);
-  if (!profileReady) return shell(<div className="loading-state">Loading profile…</div>);
+  if (!profileReady) return shell(<div className="loading-state">جارٍ تحميل الملف الشخصي…</div>);
   if (profileError || !profile) return shell(
     <section className="page-placeholder">
       <p className="eyebrow">BCS</p>
-      <h1>Profile unavailable</h1>
-      <p>{profileError || "Your BCS profile has not been provisioned yet."}</p>
+      <h1>الملف الشخصي غير متاح</h1>
+      <p>{profileError || "لم يتم تجهيز ملف BCS الخاص بك بعد."}</p>
     </section>
   );
 
