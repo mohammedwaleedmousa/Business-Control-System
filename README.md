@@ -6,7 +6,7 @@ Internal business management system for **Genan Boutique** and **Flamingo Park**
 
 - **Overall:** IN PROGRESS
 - **Current Phase:** Phase 3 — Auth & Permissions
-- **Last Completed Task:** P3.2 User profiles
+- **Last Completed Task:** P3.3 Roles
 
 ## Stack
 
@@ -51,7 +51,7 @@ Internal business management system for **Genan Boutique** and **Flamingo Park**
 ### Phase 3 — Auth & Permissions
 - [x] P3.1 Authentication
 - [x] P3.2 User profiles
-- [ ] P3.3 Roles
+- [x] P3.3 Roles
 - [ ] P3.4 Permissions
 - [ ] P3.5 Business isolation
 
@@ -156,6 +156,11 @@ Initial social platforms: Instagram, Facebook, TikTok, WhatsApp, X, YouTube.
 | P2.5 Indexes/constraints | Complete |
 | P3.1 Authentication | Complete |
 | P3.2 User profiles | Complete |
+| P3.3 Roles | Complete |
+
+## Roles
+
+P3.3 defines the BCS role model (`admin`, `manager`, `operator`, `viewer`) and adds protected database helpers for active-user role checks and administrator authorization. Role-management updates are restricted to administrators. Security Advisor was rechecked after hardening and reports no security lints.
 
 ## User Profiles
 
