@@ -87,5 +87,5 @@ export default function App() {
   if (path === "/devices/manage") {
     return shell(<DevicesPage userId={session.user.id} role={profile.role} canManage={profile.role === "admin"} />);
   }
-  return shell(<DeviceStatusDashboard userId={session.user.id} role={profile.role} />);
+  return shell(<DeviceStatusDashboard role={profile.role} />);
 }
