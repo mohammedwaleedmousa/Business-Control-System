@@ -231,3 +231,13 @@ P5.3 expands the Digital Assets module with business-aware search and filtering,
 ## Accounts
 
 P5.4 expands Accounts with business and platform context, search and status/business filters, and admin-only account creation. Authentication secrets remain outside BCS; the account registry contains operational metadata only.
+
+
+## UI completion — 2026-10-07
+
+- Switched the application workspace to a light white / silver / gray visual system while retaining the dark professional sidebar.
+- Standardized primary, secondary, and form controls to a shared height and sizing system.
+- Standardized text fields, selects, tables, badges, cards, filters, and responsive states.
+- Added the missing Users, Activity, and Settings workspace pages and connected them to routing.
+- Kept the secret-storage rule: BCS stores operational metadata and Bitwarden references, never secret values.
+- UI Definition of Done remains: tested, secured, documented, and accepted.
