@@ -6,7 +6,7 @@ Internal business management system for **Genan Boutique** and **Flamingo Park**
 
 - **Overall:** IN PROGRESS
 - **Current Phase:** Phase 3 — Auth & Permissions
-- **Last Completed Task:** P3.5 Business isolation
+- **Last Completed Task:** P4.1 Businesses
 
 ## Stack
 
@@ -56,7 +56,7 @@ Internal business management system for **Genan Boutique** and **Flamingo Park**
 - [x] P3.5 Business isolation
 
 ### Phase 4 — Core BCS
-- [ ] P4.1 Businesses
+- [x] P4.1 Businesses
 - [ ] P4.2 Users
 - [ ] P4.3 Digital Assets
 - [ ] P4.4 Accounts
@@ -159,6 +159,11 @@ Initial social platforms: Instagram, Facebook, TikTok, WhatsApp, X, YouTube.
 | P3.3 Roles | Complete |
 | P3.4 Permissions | Complete |
 | P3.5 Business isolation | Complete |
+| P4.1 Businesses | Complete |
+
+## Businesses
+
+P4.1 connects the application to the BCS business registry. Genan Boutique and Flamingo Park are seeded in the database, protected by RLS, and loaded by the authenticated React application as business metadata (`id`, `name`, `slug`, `code`, `status`). No secrets are stored in the business records.
 
 ## Business Isolation
 
