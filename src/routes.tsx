@@ -13,6 +13,7 @@ export const routes: RouteDefinition[] = [
   { path: "/accounts", label: "Accounts", element: null },
   { path: "/platforms", label: "Social Platforms", element: null },
   { path: "/devices", label: "Devices", element: null },
+  { path: "/bitwarden", label: "Bitwarden References", element: null },
   { path: "/users", label: "Users", element: null },
   { path: "/activity", label: "Activity", element: null },
   { path: "/settings", label: "Settings", element: null },
