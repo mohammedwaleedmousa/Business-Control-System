@@ -2,133 +2,84 @@ import { FormEvent, useEffect, useMemo, useState } from "react";
 import { supabase } from "../lib/supabase";
 
 type Device = {
-  id: string;
-  business_id: string;
-  name: string;
-  device_type: string;
-  serial_number: string | null;
-  asset_tag: string | null;
-  status: "active" | "inactive" | "maintenance" | "retired";
-  assigned_user_id: string | null;
+  id: string; business_id: string; name: string; device_type: string; serial_number: string | null;
+  assigned_user_id: string | null; custody_status: "not_assigned" | "in_employee_custody" | "returned";
+  handover_date: string | null; return_date: string | null; handover_return_notes: string | null;
+  phone_number: string | null; whatsapp_number: string | null;
 };
-
 type Business = { id: string; name: string; code: string };
-type UserProfile = { id: string; full_name: string | null; role: string; status: string };
+type UserProfile = { id: string; full_name: string | null };
+type Credentials = { apple_id: string; apple_password: string; phone_passcode: string; authentication_2fa: string };
 
-type Props = { canManage: boolean };
+const custodyStatuses = ["not_assigned", "in_employee_custody", "returned"] as const;
+const emptyCredentials: Credentials = { apple_id: "", apple_password: "", phone_passcode: "", authentication_2fa: "" };
 
-const deviceStatuses = ["active", "inactive", "maintenance", "retired"] as const;
+export function DevicesPage({ canManage, userId, role }: { canManage: boolean; userId: string; role: string }) {
+  const [devices,setDevices]=useState<Device[]>([]),[businesses,setBusinesses]=useState<Business[]>([]),[users,setUsers]=useState<UserProfile[]>([]);
+  const [search,setSearch]=useState(""),[custody,setCustody]=useState("all"),[showForm,setShowForm]=useState(false),[editing,setEditing]=useState<string|null>(null);
+  const [form,setForm]=useState<Omit<Device,"id">>({business_id:"",name:"",device_type:"iPhone",serial_number:"",assigned_user_id:null,custody_status:"not_assigned",handover_date:null,return_date:null,handover_return_notes:"",phone_number:"",whatsapp_number:""});
+  const [credentials,setCredentials]=useState<Credentials>(emptyCredentials),[showCredentials,setShowCredentials]=useState(false),[credentialId,setCredentialId]=useState<string|null>(null);
+  const [loading,setLoading]=useState(true),[saving,setSaving]=useState(false),[error,setError]=useState(""),[saveError,setSaveError]=useState("");
 
-export function DevicesPage({ canManage }: Props) {
-  const [devices, setDevices] = useState<Device[]>([]);
-  const [businesses, setBusinesses] = useState<Business[]>([]);
-  const [users, setUsers] = useState<UserProfile[]>([]);
-  const [search, setSearch] = useState("");
-  const [businessFilter, setBusinessFilter] = useState("");
-  const [statusFilter, setStatusFilter] = useState("");
-  const [typeFilter, setTypeFilter] = useState("");
-  const [showForm, setShowForm] = useState(false);
-  const [formBusiness, setFormBusiness] = useState("");
-  const [formName, setFormName] = useState("");
-  const [formType, setFormType] = useState("");
-  const [formSerial, setFormSerial] = useState("");
-  const [formAssetTag, setFormAssetTag] = useState("");
-  const [formUser, setFormUser] = useState("");
-  const [formStatus, setFormStatus] = useState<(typeof deviceStatuses)[number]>("active");
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-  const [error, setError] = useState("");
-  const [saveError, setSaveError] = useState("");
-
-  async function loadData() {
-    if (!supabase) { setLoading(false); return; }
-    setLoading(true);
-    setError("");
-    const [deviceResult, businessResult, userResult] = await Promise.all([
-      supabase.from("devices").select("id, business_id, name, device_type, serial_number, asset_tag, status, assigned_user_id").order("name"),
-      supabase.from("businesses").select("id, name, code").eq("status", "active").order("name"),
-      supabase.from("profiles").select("id, full_name, role, status").eq("status", "active").order("full_name"),
+  async function load(){ if(!supabase){setLoading(false);return;} setLoading(true); setError("");
+    const [d,b,u]=await Promise.all([
+      supabase.from("devices").select("id,business_id,name,device_type,serial_number,assigned_user_id,custody_status,handover_date,return_date,handover_return_notes,phone_number,whatsapp_number").order("name"),
+      supabase.from("businesses").select("id,name,code").eq("status","active").order("name"),
+      supabase.from("profiles").select("id,full_name").eq("status","active").order("full_name")
     ]);
-    const firstError = [deviceResult.error, businessResult.error, userResult.error].find(Boolean);
-    if (firstError) setError(firstError.message);
-    else {
-      setDevices((deviceResult.data ?? []) as Device[]);
-      setBusinesses((businessResult.data ?? []) as Business[]);
-      setUsers((userResult.data ?? []) as UserProfile[]);
-    }
+    const e=[d.error,b.error,u.error].find(Boolean); if(e)setError(e.message); else {setDevices((d.data??[]) as Device[]);setBusinesses((b.data??[]) as Business[]);setUsers((u.data??[]) as UserProfile[]);}
     setLoading(false);
   }
+  useEffect(()=>{void load()},[]);
 
-  useEffect(() => { void loadData(); }, []);
+  const businessMap=useMemo(()=>new Map(businesses.map(b=>[b.id,b])),[businesses]);
+  const userMap=useMemo(()=>new Map(users.map(u=>[u.id,u])),[users]);
+  const filtered=devices.filter(d=>{const q=search.trim().toLowerCase();return (!q||[d.name,d.serial_number,d.phone_number,d.whatsapp_number,userMap.get(d.assigned_user_id??"")?.full_name].some(v=>v?.toLowerCase().includes(q)))&&(custody==="all"||d.custody_status===custody)});
 
-  const businessMap = useMemo(() => new Map(businesses.map((b) => [b.id, b])), [businesses]);
-  const userMap = useMemo(() => new Map(users.map((u) => [u.id, u])), [users]);
-  const types = useMemo(() => Array.from(new Set(devices.map((d) => d.device_type))).sort(), [devices]);
+  function reset(){setForm({business_id:businesses[0]?.id??"",name:"",device_type:"iPhone",serial_number:"",assigned_user_id:null,custody_status:"not_assigned",handover_date:null,return_date:null,handover_return_notes:"",phone_number:"",whatsapp_number:""});setCredentials(emptyCredentials);setEditing(null);setSaveError("")}
+  function startEdit(d:Device){setEditing(d.id);setShowForm(true);setForm({...d});setCredentials(emptyCredentials);setSaveError("")}
 
-  const filteredDevices = devices.filter((device) => {
-    const q = search.trim().toLowerCase();
-    const matchesSearch = !q || [device.name, device.device_type, device.serial_number, device.asset_tag].some((value) => value?.toLowerCase().includes(q));
-    return matchesSearch && (!businessFilter || device.business_id === businessFilter) && (!statusFilter || device.status === statusFilter) && (!typeFilter || device.device_type === typeFilter);
-  });
-
-  function resetForm() {
-    setFormBusiness(businesses[0]?.id ?? "");
-    setFormName(""); setFormType(""); setFormSerial(""); setFormAssetTag(""); setFormUser(""); setFormStatus("active"); setSaveError("");
+  async function save(e:FormEvent){e.preventDefault();if(!supabase||!canManage)return;setSaving(true);setSaveError("");
+    const payload={...form,device_type:"iPhone",serial_number:form.serial_number?.trim()||null,phone_number:form.phone_number?.trim()||null,whatsapp_number:form.whatsapp_number?.trim()||null,handover_return_notes:form.handover_return_notes?.trim()||null};
+    const result=editing?await supabase.from("devices").update(payload).eq("id",editing).select("id").single():await supabase.from("devices").insert(payload).select("id").single();
+    if(result.error||!result.data){setSaveError(result.error?.message??"Unable to save.");setSaving(false);return;}
+    const id=result.data.id;
+    const cred=await supabase.functions.invoke("bcs-credentials",{body:{entity:"device",action:"write",entity_id:id,credentials}});
+    if(cred.error){setSaveError("Device saved, but credential storage failed. No credential value was exposed.");setSaving(false);await load();return;}
+    setShowForm(false);reset();await load();setSaving(false);
   }
 
-  async function createDevice(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    if (!supabase || !canManage) return;
-    setSaving(true); setSaveError("");
-    const { error: insertError } = await supabase.from("devices").insert({
-      business_id: formBusiness, name: formName.trim(), device_type: formType.trim(),
-      serial_number: formSerial.trim() || null, asset_tag: formAssetTag.trim() || null,
-      status: formStatus, assigned_user_id: formUser || null,
-    });
-    if (insertError) setSaveError(insertError.message);
-    else { setShowForm(false); resetForm(); await loadData(); }
-    setSaving(false);
+  async function reveal(d:Device){if(!(role==="admin"||d.assigned_user_id===userId))return;setCredentialId(d.id);setCredentials(emptyCredentials);setShowCredentials(true);setSaveError("");
+    const {data,error}=await supabase!.functions.invoke("bcs-credentials",{body:{entity:"device",action:"read",entity_id:d.id}});
+    if(error){setSaveError("Credential reveal was denied or unavailable.");return;}
+    setCredentials(data?.credentials??emptyCredentials);
   }
+  async function copy(value:string){if(value)await navigator.clipboard.writeText(value)}
 
-  return (
-    <section className="data-page">
-      <div className="data-page-header">
-        <div><p className="eyebrow">BCS</p><h1>Devices</h1><p>Business-owned device records and operational assignment metadata.</p></div>
-        <div className="data-page-actions">
-          <span className="data-count">{filteredDevices.length} of {devices.length} devices</span>
-          {canManage && <button type="button" className="primary-button" onClick={() => { resetForm(); setShowForm((v) => !v); }}>{showForm ? "Close" : "Add device"}</button>}
-        </div>
-      </div>
-
-      {canManage && showForm && (
-        <form className="inline-form" onSubmit={createDevice}>
-          <label>Business<select value={formBusiness} onChange={(e) => setFormBusiness(e.target.value)} required><option value="">Select business</option>{businesses.map((b) => <option key={b.id} value={b.id}>{b.name} ({b.code})</option>)}</select></label>
-          <label>Name<input value={formName} onChange={(e) => setFormName(e.target.value)} placeholder="Device name" required /></label>
-          <label>Device type<input value={formType} onChange={(e) => setFormType(e.target.value)} placeholder="Laptop, phone, tablet…" required /></label>
-          <label>Serial number<input value={formSerial} onChange={(e) => setFormSerial(e.target.value)} /></label>
-          <label>Asset tag<input value={formAssetTag} onChange={(e) => setFormAssetTag(e.target.value)} /></label>
-          <label>Assigned user<select value={formUser} onChange={(e) => setFormUser(e.target.value)}><option value="">Unassigned</option>{users.map((u) => <option key={u.id} value={u.id}>{u.full_name || u.id.slice(0, 8)} · {u.role}</option>)}</select></label>
-          <label>Status<select value={formStatus} onChange={(e) => setFormStatus(e.target.value as (typeof deviceStatuses)[number])}>{deviceStatuses.map((status) => <option key={status} value={status}>{status}</option>)}</select></label>
-          {saveError && <p className="auth-error" role="alert">{saveError}</p>}
-          <div className="form-actions"><button className="primary-button" type="submit" disabled={saving}>{saving ? "Saving…" : "Save device"}</button><button type="button" className="secondary-button" onClick={() => setShowForm(false)}>Cancel</button></div>
-        </form>
-      )}
-
-      <div className="filter-bar">
-        <input aria-label="Search devices" placeholder="Search devices…" value={search} onChange={(e) => setSearch(e.target.value)} />
-        <select aria-label="Filter by business" value={businessFilter} onChange={(e) => setBusinessFilter(e.target.value)}><option value="">All businesses</option>{businesses.map((b) => <option key={b.id} value={b.id}>{b.name}</option>)}</select>
-        <select aria-label="Filter by status" value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}><option value="">All statuses</option>{deviceStatuses.map((status) => <option key={status} value={status}>{status}</option>)}</select>
-        <select aria-label="Filter by device type" value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)}><option value="">All types</option>{types.map((type) => <option key={type} value={type}>{type}</option>)}</select>
-      </div>
-
-      {loading && <div className="loading-state">Loading devices…</div>}
-      {!loading && error && <p className="auth-error" role="alert">{error}</p>}
-      {!loading && !error && filteredDevices.length === 0 && <div className="empty-state">{devices.length === 0 ? "No devices have been registered yet." : "No devices match the current filters."}</div>}
-      {!loading && !error && filteredDevices.length > 0 && (
-        <div className="data-table-wrap"><table className="data-table"><thead><tr><th>Name</th><th>Business</th><th>Type</th><th>Serial number</th><th>Asset tag</th><th>Assigned user</th><th>Status</th></tr></thead><tbody>
-          {filteredDevices.map((device) => <tr key={device.id}><td><strong>{device.name}</strong></td><td>{businessMap.get(device.business_id)?.name || "—"}</td><td>{device.device_type}</td><td>{device.serial_number || "—"}</td><td>{device.asset_tag || "—"}</td><td>{device.assigned_user_id ? (userMap.get(device.assigned_user_id)?.full_name || "Assigned") : "Unassigned"}</td><td><span className={`status-badge status-${device.status}`}>{device.status}</span></td></tr>)}
-        </tbody></table></div>
-      )}
-    </section>
-  );
+  return <section className="data-page">
+    <div className="data-page-header"><div><p className="eyebrow">BCS · PHASE 1</p><h1>Company iPhones</h1><p>Company iPhone custody, contact, Apple ID, and protected credential records.</p></div><div className="data-page-actions"><span className="data-count">{filtered.length} of {devices.length} iPhones</span>{canManage&&<button className="primary-button" onClick={()=>{reset();setShowForm(v=>!v)}}>{showForm?"Close":"Add iPhone"}</button>}</div></div>
+    {canManage&&showForm&&<form className="inline-form" onSubmit={save}>
+      <label>Business<select value={form.business_id} onChange={e=>setForm({...form,business_id:e.target.value})} required><option value="">Select business</option>{businesses.map(b=><option key={b.id} value={b.id}>{b.name} ({b.code})</option>)}</select></label>
+      <label>Phone name<input value={form.name} onChange={e=>setForm({...form,name:e.target.value})} required/></label>
+      <label>Responsible employee<select value={form.assigned_user_id??""} onChange={e=>setForm({...form,assigned_user_id:e.target.value||null,custody_status:e.target.value?"in_employee_custody":"not_assigned"})}><option value="">Not assigned</option>{users.map(u=><option key={u.id} value={u.id}>{u.full_name||u.id.slice(0,8)}</option>)}</select></label>
+      <label>Call phone number<input value={form.phone_number??""} onChange={e=>setForm({...form,phone_number:e.target.value})}/></label>
+      <label>WhatsApp number<input value={form.whatsapp_number??""} onChange={e=>setForm({...form,whatsapp_number:e.target.value})}/></label>
+      <label>Serial Number<input value={form.serial_number??""} onChange={e=>setForm({...form,serial_number:e.target.value})}/></label>
+      <label>Custody status<select value={form.custody_status} onChange={e=>setForm({...form,custody_status:e.target.value as Device["custody_status"]})}>{custodyStatuses.map(s=><option key={s} value={s}>{s.replaceAll("_"," ")}</option>)}</select></label>
+      <label>Handover date<input type="date" value={form.handover_date??""} onChange={e=>setForm({...form,handover_date:e.target.value||null})}/></label>
+      <label>Return date<input type="date" value={form.return_date??""} onChange={e=>setForm({...form,return_date:e.target.value||null})}/></label>
+      <label className="field-span-2">Handover / return notes<textarea value={form.handover_return_notes??""} onChange={e=>setForm({...form,handover_return_notes:e.target.value})}/></label>
+      <div className="credential-section field-span-2"><strong>Protected credentials</strong><span>Stored inside BCS Vault and never returned in normal device queries.</span></div>
+      <label>iCloud / Apple ID<input value={credentials.apple_id} onChange={e=>setCredentials({...credentials,apple_id:e.target.value})}/></label>
+      <label>iCloud password<input type="password" value={credentials.apple_password} onChange={e=>setCredentials({...credentials,apple_password:e.target.value})} autoComplete="new-password"/></label>
+      <label>Phone passcode<input type="password" value={credentials.phone_passcode} onChange={e=>setCredentials({...credentials,phone_passcode:e.target.value})} autoComplete="new-password"/></label>
+      <label>Authentication / 2FA<input value={credentials.authentication_2fa} onChange={e=>setCredentials({...credentials,authentication_2fa:e.target.value})}/></label>
+      {saveError&&<p className="auth-error field-span-2">{saveError}</p>}
+      <div className="form-actions field-span-2"><button className="primary-button" disabled={saving}>{saving?"Saving…":editing?"Save changes":"Create iPhone"}</button><button type="button" className="secondary-button" onClick={()=>{setShowForm(false);reset()}}>Cancel</button></div>
+    </form>}
+    <div className="filter-bar"><input placeholder="Search iPhones…" value={search} onChange={e=>setSearch(e.target.value)}/><select value={custody} onChange={e=>setCustody(e.target.value)}><option value="all">All custody statuses</option>{custodyStatuses.map(s=><option key={s} value={s}>{s.replaceAll("_"," ")}</option>)}</select></div>
+    {loading&&<div className="loading-state">Loading company iPhones…</div>}{!loading&&error&&<p className="auth-error">{error}</p>}{!loading&&!error&&!filtered.length&&<div className="empty-state">No company iPhones match the current filters.</div>}
+    {!loading&&!error&&!!filtered.length&&<div className="data-table-wrap"><table className="data-table"><thead><tr><th>Phone</th><th>Employee</th><th>Call</th><th>WhatsApp</th><th>Serial</th><th>Custody</th><th>Protected</th><th>Actions</th></tr></thead><tbody>{filtered.map(d=><tr key={d.id}><td><strong>{d.name}</strong></td><td>{d.assigned_user_id?userMap.get(d.assigned_user_id)?.full_name||"Assigned":"Not assigned"}</td><td>{d.phone_number||"—"}</td><td>{d.whatsapp_number||"—"}</td><td>{d.serial_number||"—"}</td><td><span className="status-badge">{d.custody_status.replaceAll("_"," ")}</span></td><td>••••••••</td><td><div className="row-actions">{(role==="admin"||d.assigned_user_id===userId)&&<button className="ghost-button" onClick={()=>reveal(d)}>Reveal / copy</button>}{canManage&&<button className="ghost-button" onClick={()=>startEdit(d)}>Edit</button>}</div></td></tr>)}</tbody></table></div>}
+    {showCredentials&&credentialId&&<div className="secret-modal"><div className="secret-card"><div className="data-page-header"><div><p className="eyebrow">AUTHORIZED VIEW</p><h2>Protected credentials</h2><p>These values are revealed only after authorization and are never included in list responses.</p></div><button className="secondary-button" onClick={()=>setShowCredentials(false)}>Close</button></div>{saveError&&<p className="auth-error">{saveError}</p>}{Object.entries(credentials).map(([key,value])=><div className="secret-row" key={key}><span>{key.replaceAll("_"," ")}</span><input readOnly type={key.includes("password")||key.includes("passcode")?"password":"text"} value={value}/><button className="ghost-button" onClick={()=>copy(value)}>Copy</button></div>)}</div></div>}
+  </section>;
 }
