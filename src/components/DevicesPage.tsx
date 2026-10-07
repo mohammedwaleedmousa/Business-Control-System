@@ -16,7 +16,7 @@ const emptyCredentials: Credentials = { apple_id: "", apple_password: "", phone_
 
 export function DevicesPage({ canManage, userId, role }: { canManage: boolean; userId: string; role: string }) {
   const [devices,setDevices]=useState<Device[]>([]),[businesses,setBusinesses]=useState<Business[]>([]),[users,setUsers]=useState<UserProfile[]>([]);
-  const [search,setSearch]=useState(""),[custody,setCustody]=useState("all"),[showForm,setShowForm]=useState(false),[editing,setEditing]=useState<string|null>(null);
+  const [search,setSearch]=useState(""),[custody,setCustody]=useState(""),[showForm,setShowForm]=useState(false),[editing,setEditing]=useState<string|null>(null);
   const [form,setForm]=useState<Omit<Device,"id">>({business_id:"",name:"",device_type:"iPhone",serial_number:"",assigned_user_id:null,custody_status:"not_assigned",handover_date:null,return_date:null,handover_return_notes:"",phone_number:"",whatsapp_number:""});
   const [credentials,setCredentials]=useState<Credentials>(emptyCredentials),[showCredentials,setShowCredentials]=useState(false),[credentialId,setCredentialId]=useState<string|null>(null);
   const [loading,setLoading]=useState(true),[saving,setSaving]=useState(false),[error,setError]=useState(""),[saveError,setSaveError]=useState("");
@@ -40,7 +40,15 @@ export function DevicesPage({ canManage, userId, role }: { canManage: boolean; u
   function startEdit(d:Device){setEditing(d.id);setShowForm(true);setForm({...d});setCredentials(emptyCredentials);setSaveError("")}
 
   async function save(e:FormEvent){e.preventDefault();if(!supabase||!canManage)return;setSaving(true);setSaveError("");
-    const payload={...form,device_type:"iPhone",serial_number:form.serial_number?.trim()||null,phone_number:form.phone_number?.trim()||null,whatsapp_number:form.whatsapp_number?.trim()||null,handover_return_notes:form.handover_return_notes?.trim()||null};
+    const businessText=form.business_id.trim();
+    const employeeText=(form.assigned_user_id??"").trim();
+    const business=businesses.find(b=>b.name.toLowerCase()===businessText.toLowerCase()||b.code.toLowerCase()===businessText.toLowerCase());
+    const employee=users.find(u=>(u.full_name??"").trim().toLowerCase()===employeeText.toLowerCase()||u.id===employeeText);
+    const custodyText=form.custody_status.trim().toLowerCase().replaceAll(" ","_");
+    if(!business){setSaveError("Business must match an existing business name or code.");setSaving(false);return;}
+    if(employeeText&&!employee){setSaveError("Responsible employee must match an existing employee name.");setSaving(false);return;}
+    if(!custodyStatuses.includes(custodyText as Device["custody_status"])){setSaveError("Custody status must be: not assigned, in employee custody, or returned.");setSaving(false);return;}
+    const payload={...form,business_id:business.id,assigned_user_id:employee?.id??null,custody_status:custodyText as Device["custody_status"],device_type:"iPhone",serial_number:form.serial_number?.trim()||null,phone_number:form.phone_number?.trim()||null,whatsapp_number:form.whatsapp_number?.trim()||null,handover_return_notes:form.handover_return_notes?.trim()||null};
     const result=editing?await supabase.from("devices").update(payload).eq("id",editing).select("id").single():await supabase.from("devices").insert(payload).select("id").single();
     if(result.error||!result.data){setSaveError(result.error?.message??"Unable to save.");setSaving(false);return;}
     const id=result.data.id;
@@ -59,13 +67,13 @@ export function DevicesPage({ canManage, userId, role }: { canManage: boolean; u
   return <section className="data-page">
     <div className="data-page-header"><div><p className="eyebrow">BCS · PHASE 1</p><h1>Company iPhones</h1><p>Company iPhone custody, contact, Apple ID, and protected credential records.</p></div><div className="data-page-actions"><span className="data-count">{filtered.length} of {devices.length} iPhones</span>{canManage&&<button className="primary-button" onClick={()=>{reset();setShowForm(v=>!v)}}>{showForm?"Close":"Add iPhone"}</button>}</div></div>
     {canManage&&showForm&&<form className="inline-form" onSubmit={save}>
-      <label>Business<select value={form.business_id} onChange={e=>setForm({...form,business_id:e.target.value})} required><option value="">Select business</option>{businesses.map(b=><option key={b.id} value={b.id}>{b.name} ({b.code})</option>)}</select></label>
+      <label>Business<input value={form.business_id} onChange={e=>setForm({...form,business_id:e.target.value})} placeholder="Business name or code" required/></label>
       <label>Phone name<input value={form.name} onChange={e=>setForm({...form,name:e.target.value})} required/></label>
-      <label>Responsible employee<select value={form.assigned_user_id??""} onChange={e=>setForm({...form,assigned_user_id:e.target.value||null,custody_status:e.target.value?"in_employee_custody":"not_assigned"})}><option value="">Not assigned</option>{users.map(u=><option key={u.id} value={u.id}>{u.full_name||u.id.slice(0,8)}</option>)}</select></label>
+      <label>Responsible employee<input value={form.assigned_user_id??""} onChange={e=>setForm({...form,assigned_user_id:e.target.value})} placeholder="Employee name"/></label>
       <label>Call phone number<input value={form.phone_number??""} onChange={e=>setForm({...form,phone_number:e.target.value})}/></label>
       <label>WhatsApp number<input value={form.whatsapp_number??""} onChange={e=>setForm({...form,whatsapp_number:e.target.value})}/></label>
       <label>Serial Number<input value={form.serial_number??""} onChange={e=>setForm({...form,serial_number:e.target.value})}/></label>
-      <label>Custody status<select value={form.custody_status} onChange={e=>setForm({...form,custody_status:e.target.value as Device["custody_status"]})}>{custodyStatuses.map(s=><option key={s} value={s}>{s.replaceAll("_"," ")}</option>)}</select></label>
+      <label>Custody status<input value={form.custody_status.replaceAll("_"," ")} onChange={e=>setForm({...form,custody_status:e.target.value as Device["custody_status"]})} placeholder="Not assigned / In employee custody / Returned"/></label>
       <label>Handover date<input type="date" value={form.handover_date??""} onChange={e=>setForm({...form,handover_date:e.target.value||null})}/></label>
       <label>Return date<input type="date" value={form.return_date??""} onChange={e=>setForm({...form,return_date:e.target.value||null})}/></label>
       <label className="field-span-2">Handover / return notes<textarea value={form.handover_return_notes??""} onChange={e=>setForm({...form,handover_return_notes:e.target.value})}/></label>
@@ -77,7 +85,7 @@ export function DevicesPage({ canManage, userId, role }: { canManage: boolean; u
       {saveError&&<p className="auth-error field-span-2">{saveError}</p>}
       <div className="form-actions field-span-2"><button className="primary-button" disabled={saving}>{saving?"Saving…":editing?"Save changes":"Create iPhone"}</button><button type="button" className="secondary-button" onClick={()=>{setShowForm(false);reset()}}>Cancel</button></div>
     </form>}
-    <div className="filter-bar"><input placeholder="Search iPhones…" value={search} onChange={e=>setSearch(e.target.value)}/><select value={custody} onChange={e=>setCustody(e.target.value)}><option value="all">All custody statuses</option>{custodyStatuses.map(s=><option key={s} value={s}>{s.replaceAll("_"," ")}</option>)}</select></div>
+    <div className="filter-bar"><input placeholder="Search iPhones…" value={search} onChange={e=>setSearch(e.target.value)}/><input placeholder="Filter custody status…" value={custody.replaceAll("_"," ")} onChange={e=>setCustody(e.target.value.toLowerCase().replaceAll(" ","_"))}/></div>
     {loading&&<div className="loading-state">Loading company iPhones…</div>}{!loading&&error&&<p className="auth-error">{error}</p>}{!loading&&!error&&!filtered.length&&<div className="empty-state">No company iPhones match the current filters.</div>}
     {!loading&&!error&&!!filtered.length&&<div className="data-table-wrap"><table className="data-table"><thead><tr><th>Phone</th><th>Employee</th><th>Call</th><th>WhatsApp</th><th>Serial</th><th>Custody</th><th>Protected</th><th>Actions</th></tr></thead><tbody>{filtered.map(d=><tr key={d.id}><td><strong>{d.name}</strong></td><td>{d.assigned_user_id?userMap.get(d.assigned_user_id)?.full_name||"Assigned":"Not assigned"}</td><td>{d.phone_number||"—"}</td><td>{d.whatsapp_number||"—"}</td><td>{d.serial_number||"—"}</td><td><span className="status-badge">{d.custody_status.replaceAll("_"," ")}</span></td><td>••••••••</td><td><div className="row-actions">{(role==="admin"||d.assigned_user_id===userId)&&<button className="ghost-button" onClick={()=>reveal(d)}>Reveal / copy</button>}{canManage&&<button className="ghost-button" onClick={()=>startEdit(d)}>Edit</button>}</div></td></tr>)}</tbody></table></div>}
     {showCredentials&&credentialId&&<div className="secret-modal"><div className="secret-card"><div className="data-page-header"><div><p className="eyebrow">AUTHORIZED VIEW</p><h2>Protected credentials</h2><p>These values are revealed only after authorization and are never included in list responses.</p></div><button className="secondary-button" onClick={()=>setShowCredentials(false)}>Close</button></div>{saveError&&<p className="auth-error">{saveError}</p>}{Object.entries(credentials).map(([key,value])=><div className="secret-row" key={key}><span>{key.replaceAll("_"," ")}</span><input readOnly type={key.includes("password")||key.includes("passcode")?"password":"text"} value={value}/><button className="ghost-button" onClick={()=>copy(value)}>Copy</button></div>)}</div></div>}
