@@ -6,7 +6,7 @@ Internal business management system for **Genan Boutique** and **Flamingo Park**
 
 - **Overall:** IN PROGRESS
 - **Current Phase:** Phase 3 — Auth & Permissions
-- **Last Completed Task:** P3.4 Permissions
+- **Last Completed Task:** P3.5 Business isolation
 
 ## Stack
 
@@ -53,7 +53,7 @@ Internal business management system for **Genan Boutique** and **Flamingo Park**
 - [x] P3.2 User profiles
 - [x] P3.3 Roles
 - [x] P3.4 Permissions
-- [ ] P3.5 Business isolation
+- [x] P3.5 Business isolation
 
 ### Phase 4 — Core BCS
 - [ ] P4.1 Businesses
@@ -158,6 +158,11 @@ Initial social platforms: Instagram, Facebook, TikTok, WhatsApp, X, YouTube.
 | P3.2 User profiles | Complete |
 | P3.3 Roles | Complete |
 | P3.4 Permissions | Complete |
+| P3.5 Business isolation | Complete |
+
+## Business Isolation
+
+P3.5 enforces business-scoped access through RLS using business membership checks. Business-linked accounts, assets, devices, and Bitwarden references are restricted to members of the relevant business, while administrators retain cross-business access. Security Advisor reports no security lints after isolation policies were applied.
 
 ## Permissions
 
