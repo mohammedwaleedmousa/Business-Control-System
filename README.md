@@ -257,3 +257,11 @@ P5.4 expands Accounts with business and platform context, search and status/busi
 - Account platform filtering is now functional.
 - Removed unused application state from the root shell.
 - Light workspace + dark sidebar visual direction is retained consistently.
+
+
+## Visual rule — 2026-10-07
+
+- White is the default background across the application, including the sidebar and topbar.
+- Black, charcoal, and gray are reserved for text, borders, controls, hierarchy, and status treatment.
+- White text is used only on intentionally black primary buttons or dark status elements.
+- Form controls share the same 42px height and consistent visual treatment.
