@@ -20,6 +20,7 @@ export default function App() {
   const [authReady, setAuthReady] = useState(!supabase);
   const [profileReady, setProfileReady] = useState(!supabase);
   const [profileError, setProfileError] = useState("");
+  const [businesses, setBusinesses] = useState<Business[]>([]);
   const [path, setPath] = useState(window.location.pathname);
 
   useEffect(() => {
@@ -74,6 +75,19 @@ export default function App() {
     };
   }, [session]);
 
+  useEffect(() => {
+    if (!supabase || !session?.user.id) {
+      setBusinesses([]);
+      return;
+    }
+    let active = true;
+    supabase.from("businesses").select("id, name, slug, code, status").order("name").then(({ data, error }) => {
+      if (!active) return;
+      if (!error) setBusinesses((data ?? []) as Business[]);
+    });
+    return () => { active = false; };
+  }, [session]);
+
   const currentRoute = useMemo(
     () => routes.find((route) => route.path === path) ?? routes[0],
     [path],
@@ -112,7 +126,7 @@ export default function App() {
     <AppShell>
       <div className="session-bar">
         <span>{profile.full_name || session.user.email}</span>
-        <span>{profile.role}</span>
+        <span>{profile.role} · {businesses.length} businesses</span>
         <button type="button" onClick={() => supabase?.auth.signOut()}>Sign out</button>
       </div>
       <nav className="navigation" aria-label="Primary">
