@@ -29,11 +29,11 @@ export function AuthScreen() {
       <form onSubmit={signIn} className="auth-form">
         <label>
           البريد الإلكتروني
-          <input type="email" value={email} onChange={(e) => setالبريد الإلكتروني(e.target.value)} autoComplete="email" required />
+          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" required />
         </label>
         <label>
           كلمة المرور
-          <input type="password" value={password} onChange={(e) => setكلمة المرور(e.target.value)} autoComplete="current-password" required />
+          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="current-password" required />
         </label>
         {error && <p className="auth-error" role="alert">{error}</p>}
         <button className="auth-submit" type="submit" disabled={pending}>
