@@ -2,7 +2,7 @@
 -- Only trusted server-side MDM/provider integrations may write these rows.
 -- Do not store account usernames, messages, screenshots, keystrokes, or usage duration.
 
-create table if not exists public.device_status_telemetry (
+-- The composite FK below enforces that telemetry belongs to the same business as the device.\n-- Older devices schemas may not have the required composite uniqueness, so add it idempotently.\ndo $\nbegin\n  if not exists (\n    select 1\n    from pg_constraint\n    where conname = 'devices_id_business_id_key'\n      and conrelid = 'public.devices'::regclass\n  ) then\n    alter table public.devices\n      add constraint devices_id_business_id_key unique (id, business_id);\n  end if;\nend\n$;\n\ncreate table if not exists public.device_status_telemetry (
   device_id uuid primary key references public.devices(id) on delete cascade,
   business_id uuid not null references public.businesses(id) on delete cascade,
   connection_state text not null default 'unknown'
