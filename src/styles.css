@@ -16,3 +16,12 @@
 .status-badge{white-space:nowrap}
 .secret-row{grid-template-columns:190px minmax(0,1fr) auto}
 @media(max-width:680px){.filter-bar .secondary-button{width:100%}.secret-row{grid-template-columns:1fr}}
+
+/* تخطيط الواجهة العربية */
+body{direction:rtl}
+.sidebar{inset:0 0 0 auto;border-right:0;border-left:1px solid var(--line)}
+.sidebar-link{text-align:right}
+.main-shell{margin-left:0;margin-right:248px}
+@media(max-width:900px){.main-shell{margin-left:0;margin-right:210px}}
+@media(max-width:680px){.sidebar{right:0;left:auto}.main-shell{margin-left:0;margin-right:68px}}
+.sidebar-brand{direction:rtl}.sidebar-user{direction:rtl}.topbar{direction:rtl}.breadcrumb{direction:rtl}
