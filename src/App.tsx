@@ -6,6 +6,7 @@ import { routes } from "./routes";
 import { supabase } from "./lib/supabase";
 import { AccountsPage } from "./components/AccountsPage";
 import { DevicesPage } from "./components/DevicesPage";
+import { DeviceAppsPage } from "./components/DeviceAppsPage";
 
 type Profile = { id: string; full_name: string | null; role: "admin" | "manager" | "operator" | "viewer"; status: "active" | "inactive" };
 
@@ -78,6 +79,9 @@ export default function App() {
 
   if (currentRoute.path === "/accounts") {
     return shell(<AccountsPage userId={session.user.id} role={profile.role} canManage={profile.role === "admin"} />);
+  }
+  if (currentRoute.path === "/device-apps") {
+    return shell(<DeviceAppsPage canManage={profile.role === "admin"} />);
   }
   return shell(<DevicesPage userId={session.user.id} role={profile.role} canManage={profile.role === "admin"} />);
 }
