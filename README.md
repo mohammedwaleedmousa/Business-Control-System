@@ -6,7 +6,7 @@ Internal business management system for **Genan Boutique** and **Flamingo Park**
 
 - **Overall:** IN PROGRESS
 - **Current Phase:** Phase 3 — Auth & Permissions
-- **Last Completed Task:** P4.3 Digital Assets
+- **Last Completed Task:** P4.4 Accounts
 
 ## Stack
 
@@ -59,6 +59,7 @@ Internal business management system for **Genan Boutique** and **Flamingo Park**
 - [x] P4.1 Businesses
 - [x] P4.2 Users
 - [x] P4.3 Digital Assets
+- [x] P4.4 Accounts
 - [ ] P4.4 Accounts
 - [ ] P4.5 Social Platforms
 - [ ] P4.6 Devices
@@ -162,6 +163,7 @@ Initial social platforms: Instagram, Facebook, TikTok, WhatsApp, X, YouTube.
 | P4.1 Businesses | Complete |
 | P4.2 Users | Complete |
 | P4.3 Digital Assets | Complete |
+| P4.4 Accounts | Complete |
 
 ## Digital Assets
 
