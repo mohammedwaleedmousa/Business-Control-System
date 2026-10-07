@@ -13,7 +13,7 @@ const scope:{[key:string]:string}={personal:"حساب شخصي",company:"حسا�
 
 function relative(value:string|null){if(!value)return "لا توجد مزامنة";const m=Math.floor(Math.max(0,Date.now()-new Date(value).getTime())/60000);if(m<1)return "منذ أقل من دقيقة";if(m<60)return "منذ "+m+" دقيقة";return "منذ "+Math.floor(m/60)+" ساعة";}
 
-export function DeviceStatusDashboard({userId,role}:{userId:string;role:string}){
+export function DeviceStatusDashboard({role}:{role:string}){
  const [devices,setDevices]=useState<Device[]>([]),[profiles,setProfiles]=useState<Profile[]>([]),[apps,setApps]=useState<ApprovedApp[]>([]),[statuses,setStatuses]=useState<Status[]>([]),[search,setSearch]=useState(""),[loading,setLoading]=useState(true),[error,setError]=useState("");
  async function load(){if(!supabase){setLoading(false);return;}const [d,p,a,s]=await Promise.all([
   supabase.from("devices").select("id,business_id,name,assigned_user_id,custody_status").eq("device_type","الهاتف").order("name"),
