@@ -7,28 +7,72 @@ import { routes } from "./routes";
 import { config } from "./config/env";
 import { supabase } from "./lib/supabase";
 
+type Profile = {
+  id: string;
+  full_name: string | null;
+  role: "admin" | "manager" | "operator" | "viewer";
+  status: "active" | "inactive";
+};
+
 export default function App() {
   const [session, setSession] = useState<Session | null>(null);
+  const [profile, setProfile] = useState<Profile | null>(null);
   const [authReady, setAuthReady] = useState(!supabase);
+  const [profileReady, setProfileReady] = useState(!supabase);
+  const [profileError, setProfileError] = useState("");
   const [path, setPath] = useState(window.location.pathname);
 
   useEffect(() => {
     if (!supabase) return;
     let active = true;
+
     supabase.auth.getSession().then(({ data }) => {
-      if (active) {
-        setSession(data.session);
-        setAuthReady(true);
-      }
+      if (!active) return;
+      setSession(data.session);
+      setAuthReady(true);
     });
+
     const { data: listener } = supabase.auth.onAuthStateChange((_event, nextSession) => {
       setSession(nextSession);
     });
+
     return () => {
       active = false;
       listener.subscription.unsubscribe();
     };
   }, []);
+
+  useEffect(() => {
+    if (!supabase || !session?.user.id) {
+      setProfile(null);
+      setProfileReady(!session);
+      setProfileError("");
+      return;
+    }
+
+    let active = true;
+    setProfileReady(false);
+    setProfileError("");
+
+    supabase
+      .from("profiles")
+      .select("id, full_name, role, status")
+      .eq("id", session.user.id)
+      .maybeSingle()
+      .then(({ data, error }) => {
+        if (!active) return;
+        if (error) {
+          setProfileError(error.message);
+        } else {
+          setProfile(data as Profile | null);
+        }
+        setProfileReady(true);
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [session]);
 
   const currentRoute = useMemo(
     () => routes.find((route) => route.path === path) ?? routes[0],
@@ -48,10 +92,27 @@ export default function App() {
     return <AppShell><AuthScreen /></AppShell>;
   }
 
+  if (!profileReady) {
+    return <AppShell><div className="loading-state">Loading profile…</div></AppShell>;
+  }
+
+  if (profileError || !profile) {
+    return (
+      <AppShell>
+        <section className="page-placeholder">
+          <p className="eyebrow">BCS</p>
+          <h1>Profile unavailable</h1>
+          <p>{profileError || "Your BCS profile has not been provisioned yet."}</p>
+        </section>
+      </AppShell>
+    );
+  }
+
   return (
     <AppShell>
       <div className="session-bar">
-        <span>{session.user.email}</span>
+        <span>{profile.full_name || session.user.email}</span>
+        <span>{profile.role}</span>
         <button type="button" onClick={() => supabase?.auth.signOut()}>Sign out</button>
       </div>
       <nav className="navigation" aria-label="Primary">
