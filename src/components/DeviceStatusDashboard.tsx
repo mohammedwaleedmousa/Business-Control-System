@@ -21,7 +21,7 @@ export function DeviceStatusDashboard({role}:{role:string}){
   supabase.from("approved_device_apps").select("business_id,bundle_id,display_name").order("display_name"),
   supabase.from("device_status_telemetry").select("device_id,connection_state,last_seen_at,current_app_bundle_id,current_app_name,current_app_observed_at,account_scope,source,updated_at")
  ]);const e=[d.error,p.error,a.error,s.error].find(Boolean);if(e)setError(e.message);else{setDevices((d.data??[]) as Device[]);setProfiles((p.data??[]) as Profile[]);setApps((a.data??[]) as ApprovedApp[]);setStatuses((s.data??[]) as Status[]);}setLoading(false);}
- useEffect(()=>{void load();const id=window.setInterval(()=>void load(),15000);return()=>window.clearInterval(id);},[]);
+ useEffect(()=>{\n  void load();\n  const id=window.setInterval(()=>void load(),15000);\n  const channel=supabase?.channel("device-status-telemetry")\n    .on("postgres_changes",{event:"*",schema:"public",table:"device_status_telemetry"},()=>void load())\n    .subscribe();\n  return()=>{window.clearInterval(id);if(channel)supabase?.removeChannel(channel);};\n },[]);
  const users=useMemo(()=>new Map(profiles.map(p=>[p.id,p.full_name||"موظف"])),[profiles]);
  const statusMap=useMemo(()=>new Map(statuses.map(s=>[s.device_id,s])),[statuses]);
  const filtered=devices.filter(d=>{const q=search.trim().toLowerCase();return !q||d.name.toLowerCase().includes(q)||(users.get(d.assigned_user_id||"")||"").toLowerCase().includes(q);});
