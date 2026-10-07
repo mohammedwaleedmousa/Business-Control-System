@@ -110,3 +110,16 @@ button { cursor: pointer; }
 .auth-error { margin: 0; color: #b42318; font-size: 14px; }
 .session-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; color: var(--text-500); font-size: 14px; }
 .session-bar button { border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--surface); padding: 7px 10px; color: var(--text-700); }
+
+.data-page { padding: 8px 0 40px; }
+.data-page-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; margin-bottom: 24px; }
+.data-page-header h1 { margin: 0 0 8px; font-size: 32px; }
+.data-page-header p:last-child { margin: 0; color: var(--text-500); }
+.data-count { padding: 7px 10px; border: 1px solid var(--border); border-radius: 999px; background: var(--surface); color: var(--text-700); font-size: 13px; font-weight: 650; white-space: nowrap; }
+.data-table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--surface); box-shadow: var(--shadow-sm); }
+.data-table { width: 100%; border-collapse: collapse; min-width: 640px; }
+.data-table th, .data-table td { padding: 12px 16px; border-bottom: 1px solid var(--border); text-align: left; font-size: 14px; }
+.data-table th { color: var(--text-500); font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
+.data-table tbody tr:last-child td { border-bottom: 0; }
+.status-badge { display: inline-flex; padding: 4px 8px; border-radius: 999px; background: var(--surface-muted); color: var(--text-700); font-size: 12px; font-weight: 650; }
+.empty-state { padding: 48px 24px; border: 1px dashed var(--border-strong); border-radius: var(--radius-lg); color: var(--text-500); text-align: center; background: var(--surface); }
