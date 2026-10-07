@@ -6,7 +6,7 @@ Internal business management system for **Genan Boutique** and **Flamingo Park**
 
 - **Overall:** IN PROGRESS
 - **Current Phase:** Phase 4 — Core BCS
-- **Last Completed Task:** P5.2 Business management
+- **Last Completed Task:** P5.3 Digital Assets
 
 ## Stack
 
@@ -219,3 +219,7 @@ P5.1 replaces the dashboard placeholder with an authenticated operational overvi
 ## Business Management
 
 P5.2 adds the authenticated Businesses module with registry search, active/inactive filtering, status visibility, and admin-only business creation. Creation is enforced by the existing Supabase authorization policy; non-admin users receive a read-only registry.
+
+## Digital Assets
+
+P5.3 expands the Digital Assets module with business-aware search and filtering, status filtering, and admin-only asset creation. The module stores operational metadata only; secret values remain outside BCS.
