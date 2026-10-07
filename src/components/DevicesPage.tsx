@@ -1,5 +1,6 @@
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { supabase } from "../lib/supabase";
+import { DeviceAppsPage } from "./DeviceAppsPage";
 
 type Device = {
   id: string; business_id: string; name: string; device_type: string; serial_number: string | null;
@@ -22,6 +23,7 @@ export function DevicesPage({ canManage, userId, role }: { canManage: boolean; u
   const [form,setForm]=useState<Omit<Device,"id">>({business_id:"",name:"",device_type:"الهاتف",serial_number:"",assigned_user_id:null,custody_status:"not_assigned",handover_date:null,return_date:null,handover_return_notes:"",phone_number:"",whatsapp_number:""});
   const [credentials,setCredentials]=useState<Credentials>(emptyCredentials),[showCredentials,setShowCredentials]=useState(false),[credentialId,setCredentialId]=useState<string|null>(null);
   const [loading,setLoading]=useState(true),[saving,setSaving]=useState(false),[error,setError]=useState(""),[saveError,setSaveError]=useState("");
+  const [activeTab, setActiveTab] = useState<"devices" | "apps">("devices");
 
   async function load(){ if(!supabase){setLoading(false);return;} setLoading(true); setError("");
     const [d,b,u]=await Promise.all([
@@ -67,7 +69,10 @@ export function DevicesPage({ canManage, userId, role }: { canManage: boolean; u
   }
   async function copy(value:string){if(value)await navigator.clipboard.writeText(value)}
 
+  if (activeTab === "apps") return <><div className="filter-bar"><button className="secondary-button" onClick={() => setActiveTab("devices")}>هواتف الشركة</button><button className="primary-button" onClick={() => setActiveTab("apps")}>جرد التطبيقات ومراجعتها</button></div><DeviceAppsPage canManage={canManage} /></>;
+
   return <section className="data-page">
+    <div className="filter-bar"><button className="primary-button" onClick={() => setActiveTab("devices")}>هواتف الشركة</button><button className="secondary-button" onClick={() => setActiveTab("apps")}>جرد التطبيقات ومراجعتها</button></div>
     <div className="data-page-header"><div><p className="eyebrow">المرحلة الأولى</p><h1>هواتف الشركة</h1><p>إدارة هواتف الشركة، وبيانات الاتصال، وحساب Apple، وبيانات الدخول المحمية.</p></div><div className="data-page-actions"><span className="data-count">{filtered.length} من {devices.length} هاتفًا</span>{canManage&&<button className="primary-button" onClick={()=>{reset();setShowForm(v=>!v)}}>{showForm?"إغلاق":"إضافة هاتف"}</button>}</div></div>
     {canManage&&showForm&&<form className="inline-form" onSubmit={save}>
       <label>الشركة<input value={form.business_id} onChange={e=>setForm({...form,business_id:e.target.value})} placeholder="اسم الشركة أو رمزها" required/></label>
