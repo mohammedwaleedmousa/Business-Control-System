@@ -84,12 +84,15 @@ Phase 1 completion requires:
 
 ## Phase 2 — Company iPhone app inventory and review
 
-Phase 2 is being developed on branch `phase-2-device-management`. It adds a **third independent top-level page**, `إدارة تطبيقات الآيفون`, alongside Company iPhones and Social Media Accounts. The page uses shared `device_id` and `business_id` relations to show each app inventory/review with its existing phone, responsible employee, and company; device and employee details are not re-entered or duplicated. It will integrate an Apple-compatible mobile device management (MDM) provider only after provider and security verification. BCS cannot independently monitor unmanaged iPhones, and standard MDM does not guarantee the currently foregrounded app or the active account inside Instagram.
+Phase 2 has been implemented and merged to `main`. It adds a **third independent top-level page**, `إدارة تطبيقات الآيفون`, alongside Company iPhones and Social Media Accounts. The page uses shared `device_id` and `business_id` relations to show each app inventory/review with its existing phone, responsible employee, and company; device and employee details are not re-entered or duplicated.
+
+The Phase 2 database migration is present in the repository but has **not yet been applied to the live Supabase database**. It will be applied only after schema/RLS review and controlled validation.
 
 - [x] Document Apple capability limits, target architecture, privacy controls, and safe enrollment prerequisites.
-- [ ] Select and verify an MDM provider and its API capabilities. Orchard MDM is a candidate for evaluation only, not yet approved.
-- [x] Add a separate top-level app inventory/review page, approved-app list, and administrator review workflow UI (new → under review → discussed → closed); database migration is created but not applied.
+- [x] Add a separate top-level app inventory/review page, approved-app list, and administrator review workflow UI (new → under review → discussed → closed).
 - [x] Link inventory and review rows to existing company, phone, and responsible-employee records through shared IDs; no duplicated device records.
+- [ ] Review and apply the Phase 2 database migration to the target Supabase environment.
+- [ ] Select and verify an MDM provider and its API capabilities. Orchard MDM remains a candidate for evaluation only, not approved.
 - [ ] Audit existing iPhones and approve a data-preserving enrollment plan before changing devices.
 - [ ] Implement server-side provider integration, tenant-scoped authorization, and verified telemetry ingestion.
 - [ ] Implement automatic dashboard updates and stale-data indicators.
@@ -102,7 +105,11 @@ No MDM provider is connected and no actual device monitoring or blocking policy 
 
 ## Current status
 
-Phase 1 remains the existing two-module scope. Phase 2 adds a third independent page on branch `phase-2-device-management`; the live MDM integration and migration application remain pending. No Phase 1 features were intentionally changed.
+**Repository status:** Phase 1 and the Phase 2 application code are merged to `main`.
+
+**Production-readiness status:** Not yet certified as production-ready. The current blockers are live database migration/validation, application build/runtime verification, end-to-end security and authorization testing, and deployment verification. Cloudflare deployment has not been independently confirmed from this repository connection.
+
+**Latest Phase 2 merge:** `07965e3cdd9de52bbf41fb10dc93066266b09d8a`.
 
 ### MDM provider review — 2026-10-07
 
