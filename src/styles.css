@@ -123,3 +123,24 @@ button { cursor: pointer; }
 .data-table tbody tr:last-child td { border-bottom: 0; }
 .status-badge { display: inline-flex; padding: 4px 8px; border-radius: 999px; background: var(--surface-muted); color: var(--text-700); font-size: 12px; font-weight: 650; }
 .empty-state { padding: 48px 24px; border: 1px dashed var(--border-strong); border-radius: var(--radius-lg); color: var(--text-500); text-align: center; background: var(--surface); }
+
+.dashboard { padding: 8px 0 48px; }
+.dashboard-hero { padding: 20px 0 28px; }
+.dashboard-hero h1 { margin: 0 0 8px; font-size: clamp(2rem, 5vw, 3rem); line-height: 1.05; }
+.dashboard-hero p:last-child { margin: 0; color: var(--text-500); }
+.eyebrow { margin: 0 0 6px; font-size: 11px; font-weight: 800; letter-spacing: .14em; color: var(--text-500); }
+.dashboard-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-bottom: 32px; }
+.stat-card { padding: 18px; border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--surface); box-shadow: var(--shadow-sm); }
+.stat-card span { display: block; color: var(--text-500); font-size: 13px; margin-bottom: 10px; }
+.stat-card strong { font-size: 28px; line-height: 1; }
+.dashboard-section { margin-top: 12px; }
+.section-heading { margin-bottom: 14px; }
+.section-heading h2 { margin: 0; font-size: 22px; }
+.business-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.business-card { padding: 20px; border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--surface); box-shadow: var(--shadow-sm); }
+.business-card > div { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.business-card h3 { margin: 22px 0 8px; font-size: 20px; }
+.business-card p { margin: 0; color: var(--text-500); line-height: 1.5; }
+.business-code { font-size: 12px; font-weight: 800; letter-spacing: .08em; color: var(--text-500); }
+@media (max-width: 760px) { .dashboard-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } .business-grid { grid-template-columns: 1fr; } }
+@media (max-width: 480px) { .dashboard-stats { grid-template-columns: 1fr; } }
