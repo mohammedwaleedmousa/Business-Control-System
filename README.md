@@ -6,7 +6,7 @@ Internal business management system for **Genan Boutique** and **Flamingo Park**
 
 - **Overall:** IN PROGRESS
 - **Current Phase:** Phase 3 — Auth & Permissions
-- **Last Completed Task:** P2.5 Indexes/constraints
+- **Last Completed Task:** P3.1 Authentication
 
 ## Stack
 
@@ -49,7 +49,7 @@ Internal business management system for **Genan Boutique** and **Flamingo Park**
 - [x] P2.5 Indexes/constraints
 
 ### Phase 3 — Auth & Permissions
-- [ ] P3.1 Authentication
+- [x] P3.1 Authentication
 - [ ] P3.2 User profiles
 - [ ] P3.3 Roles
 - [ ] P3.4 Permissions
@@ -154,3 +154,8 @@ Initial social platforms: Instagram, Facebook, TikTok, WhatsApp, X, YouTube.
 | P2.3 Migrations | Complete |
 | P2.4 RLS | Complete |
 | P2.5 Indexes/constraints | Complete |
+| P3.1 Authentication | Complete |
+
+## Authentication
+
+P3.1 implements Supabase email/password authentication in the React client using the publishable/anon key only. The application restores the current session on startup, listens for auth state changes, protects the application behind sign-in, and provides sign-out. No passwords or auth tokens are stored by BCS application tables.
