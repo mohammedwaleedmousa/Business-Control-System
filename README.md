@@ -6,7 +6,7 @@ Internal business management system for **Genan Boutique** and **Flamingo Park**
 
 - **Overall:** IN PROGRESS
 - **Current Phase:** Phase 3 — Auth & Permissions
-- **Last Completed Task:** P4.1 Businesses
+- **Last Completed Task:** P4.2 Users
 
 ## Stack
 
@@ -57,7 +57,7 @@ Internal business management system for **Genan Boutique** and **Flamingo Park**
 
 ### Phase 4 — Core BCS
 - [x] P4.1 Businesses
-- [ ] P4.2 Users
+- [x] P4.2 Users
 - [ ] P4.3 Digital Assets
 - [ ] P4.4 Accounts
 - [ ] P4.5 Social Platforms
@@ -160,6 +160,11 @@ Initial social platforms: Instagram, Facebook, TikTok, WhatsApp, X, YouTube.
 | P3.4 Permissions | Complete |
 | P3.5 Business isolation | Complete |
 | P4.1 Businesses | Complete |
+| P4.2 Users | Complete |
+
+## Users
+
+P4.2 connects the authenticated user registry to the application. The current user's profile is loaded after authentication, and administrators receive a protected profile-count summary. User records remain metadata-only and are governed by the existing RLS and role policies.
 
 ## Businesses
 
