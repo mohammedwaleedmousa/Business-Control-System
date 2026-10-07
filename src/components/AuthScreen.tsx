@@ -3,8 +3,8 @@ import { useState } from "react";
 import { supabase } from "../lib/supabase";
 
 export function AuthScreen() {
-  const [email, setالبريد الإلكتروني] = useState("");
-  const [password, setكلمة المرور] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
 
@@ -16,7 +16,7 @@ export function AuthScreen() {
     }
     setPending(true);
     setError("");
-    const { error: signInError } = await supabase.auth.signInWithكلمة المرور({ email, password });
+    const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
     if (signInError) setError(signInError.message);
     setPending(false);
   }
