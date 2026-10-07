@@ -11,7 +11,9 @@ type DigitalAsset = {
   notes: string | null;
 };
 
-export function DigitalAssetsPage() {
+type Props = { canManage: boolean };
+
+export function DigitalAssetsPage({ canManage }: Props) {
   const [assets, setAssets] = useState<DigitalAsset[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
