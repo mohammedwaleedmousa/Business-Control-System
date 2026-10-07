@@ -6,7 +6,7 @@ Internal business management system for **Genan Boutique** and **Flamingo Park**
 
 - **Overall:** IN PROGRESS
 - **Current Phase:** Phase 3 — Auth & Permissions
-- **Last Completed Task:** P3.3 Roles
+- **Last Completed Task:** P3.4 Permissions
 
 ## Stack
 
@@ -52,7 +52,7 @@ Internal business management system for **Genan Boutique** and **Flamingo Park**
 - [x] P3.1 Authentication
 - [x] P3.2 User profiles
 - [x] P3.3 Roles
-- [ ] P3.4 Permissions
+- [x] P3.4 Permissions
 - [ ] P3.5 Business isolation
 
 ### Phase 4 — Core BCS
@@ -157,6 +157,11 @@ Initial social platforms: Instagram, Facebook, TikTok, WhatsApp, X, YouTube.
 | P3.1 Authentication | Complete |
 | P3.2 User profiles | Complete |
 | P3.3 Roles | Complete |
+| P3.4 Permissions | Complete |
+
+## Permissions
+
+P3.4 applies role-based authorization policies at the database layer. Administrators can manage BCS master data and profiles; authenticated users retain read access according to the existing RLS rules. Bitwarden references remain metadata-only and never contain secrets. Security Advisor reports no security lints after the permission policies were applied.
 
 ## Roles
 
