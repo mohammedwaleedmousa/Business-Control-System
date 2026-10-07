@@ -213,7 +213,7 @@ export default function App() {
           <span>{profile.role}</span>
           <button type="button" onClick={() => supabase?.auth.signOut()}>Sign out</button>
         </div>
-        <DevicesPage />
+        <DevicesPage canManage={profile.role === "admin"} />
       </AppShell>
     );
   }
