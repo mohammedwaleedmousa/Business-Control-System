@@ -15,6 +15,8 @@ create table if not exists public.approved_device_apps (
   unique (business_id, bundle_id)
 );
 
+create unique index if not exists devices_id_business_id_uidx on public.devices (id, business_id);
+
 create table if not exists public.device_app_inventory (
   id uuid primary key default gen_random_uuid(),
   device_id uuid not null references public.devices(id) on delete cascade,
@@ -115,7 +117,7 @@ create policy "active users can read app inventory"
 on public.device_app_inventory for select to authenticated
 using (
   exists (select 1 from public.profiles p where p.id = (select auth.uid()) and p.status = 'active')
-  and exists (select 1 from public.devices d where d.id = device_id and d.business_id = business_id)
+  and exists (select 1 from public.devices d where d.id = public.device_app_inventory.device_id and d.business_id = public.device_app_inventory.business_id)
 );
 
 drop policy if exists "active users can read app reviews" on public.device_app_reviews;
