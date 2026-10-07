@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { AppShell } from "./components/AppShell";
 import { PagePlaceholder } from "./components/PagePlaceholder";
 import { routes } from "./routes";
+import { config } from "./config/env";
 
 export default function App() {
   const [path, setPath] = useState(window.location.pathname);
@@ -31,7 +32,7 @@ export default function App() {
       </nav>
       <PagePlaceholder
         title={currentRoute.label}
-        description="BCS architecture is being built incrementally. Business modules will be connected after the foundation is verified."
+        description={`BCS architecture is being built incrementally for ${config.appName}. Business modules will be connected after the foundation is verified.`}
       />
     </AppShell>
   );
