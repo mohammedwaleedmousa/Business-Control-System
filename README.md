@@ -5,8 +5,8 @@ Internal business management system for **Genan Boutique** and **Flamingo Park**
 ## Status
 
 - **Overall:** IN PROGRESS
-- **Current Phase:** Phase 4 — Core BCS
-- **Last Completed Task:** P5.4 Accounts
+- **Current Phase:** Phase 5 — UI
+- **Last Completed Task:** P5.5 Devices
 
 ## Stack
 
@@ -67,9 +67,9 @@ Internal business management system for **Genan Boutique** and **Flamingo Park**
 ### Phase 5 — UI
 - [x] P5.1 Dashboard
 - [x] P5.2 Business management
-- [ ] P5.3 Assets
+- [x] P5.3 Assets
 - [x] P5.4 Accounts
-- [ ] P5.5 Devices
+- [x] P5.5 Devices
 - [ ] P5.6 Users
 - [ ] P5.7 Activity/Audit
 - [ ] P5.8 Search + Filters
@@ -167,6 +167,10 @@ Initial social platforms: Instagram, Facebook, TikTok, WhatsApp, X, YouTube.
 | P4.6 Devices | Complete |
 | P4.7 Bitwarden references | Complete |
 | P5.1 Dashboard | Complete |
+| P5.2 Business management | Complete |
+| P5.3 Digital Assets | Complete |
+| P5.4 Accounts | Complete |
+| P5.5 Devices | Complete |
 
 ## Build Verification
 
