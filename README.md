@@ -5,7 +5,7 @@ Internal business management system for **Genan Boutique** and **Flamingo Park**
 ## Status
 
 - **Overall:** IN PROGRESS
-- **Current Phase:** Phase 3 — Auth & Permissions
+- **Current Phase:** Phase 4 — Core BCS
 - **Last Completed Task:** P4.5 Social Platforms (Cloudflare build verified)
 
 ## Stack
@@ -61,7 +61,7 @@ Internal business management system for **Genan Boutique** and **Flamingo Park**
 - [x] P4.3 Digital Assets
 - [x] P4.4 Accounts
 - [x] P4.5 Social Platforms
-- [ ] P4.6 Devices
+- [x] P4.6 Devices
 - [ ] P4.7 Bitwarden references
 
 ### Phase 5 — UI
@@ -164,10 +164,11 @@ Initial social platforms: Instagram, Facebook, TikTok, WhatsApp, X, YouTube.
 | P4.3 Digital Assets | Complete |
 | P4.4 Accounts | Complete |
 | P4.5 Social Platforms | Complete |
+| P4.6 Devices | Complete |
 
 ## Build Verification
 
-Cloudflare build issue identified: Vite client types were missing from the TypeScript project. Added `src/vite-env.d.ts` with the Vite client type reference. The next deployment should re-run `npm run build` to verify the fix.
+Cloudflare production build verified successfully after the React/Vite TypeScript configuration and Supabase client typing fixes.
 
 ## Digital Assets
 
@@ -200,3 +201,7 @@ P3.2 provisions a BCS profile automatically when a new Supabase Auth user is cre
 ## Authentication
 
 P3.1 implements Supabase email/password authentication in the React client using the publishable/anon key only. The application restores the current session on startup, listens for auth state changes, protects the application behind sign-in, and provides sign-out. No passwords or auth tokens are stored by BCS application tables.
+
+## Devices
+
+P4.6 connects the device registry to the authenticated application. Devices are loaded through RLS with business-scoped access and display operational metadata such as type, serial number, asset tag, and status. Credential material is never stored in device records.
