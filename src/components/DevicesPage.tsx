@@ -8,7 +8,7 @@ type Device = {
   phone_number: string | null; whatsapp_number: string | null;
 };
 type Business = { id: string; name: string; code: string };
-type UserPrمنile = { id: string; full_name: string | null };
+type UserProfile = { id: string; full_name: string | null };
 type Credentials = { apple_id: string; apple_password: string; phone_passcode: string; authentication_2fa: string };
 
 const custodyStatuses = ["not_assigned", "in_employee_custody", "returned"] as const;
@@ -17,9 +17,9 @@ const credentialLabels: Record<string,string> = { apple_id:"iCloud / Apple ID", 
 const emptyCredentials: Credentials = { apple_id: "", apple_password: "", phone_passcode: "", authentication_2fa: "" };
 
 export function DevicesPage({ canManage, userId, role }: { canManage: boolean; userId: string; role: string }) {
-  const [devices,setDevices]=useState<Device[]>([]),[businesses,setBusinesses]=useState<Business[]>([]),[users,setUsers]=useState<UserPrمنile[]>([]);
+  const [devices,setDevices]=useState<Device[]>([]),[businesses,setBusinesses]=useState<Business[]>([]),[users,setUsers]=useState<UserProfile[]>([]);
   const [search,setSearch]=useState(""),[custody,setالعهدة]=useState(""),[showForm,setShowForm]=useState(false),[editing,setتعديلing]=useState<string|null>(null);
-  const [form,setForm]=useState<Omit<Device,"id">>({business_id:"",name:"",device_type:"iالهاتف",serial_number:"",assigned_user_id:null,custody_status:"not_assigned",handover_date:null,return_date:null,handover_return_notes:"",phone_number:"",whatsapp_number:""});
+  const [form,setForm]=useState<Omit<Device,"id">>({business_id:"",name:"",device_type:"الهاتف",serial_number:"",assigned_user_id:null,custody_status:"not_assigned",handover_date:null,return_date:null,handover_return_notes:"",phone_number:"",whatsapp_number:""});
   const [credentials,setCredentials]=useState<Credentials>(emptyCredentials),[showCredentials,setShowCredentials]=useState(false),[credentialId,setCredentialId]=useState<string|null>(null);
   const [loading,setLoading]=useState(true),[saving,setSaving]=useState(false),[error,setError]=useState(""),[saveError,setSaveError]=useState("");
 
@@ -27,9 +27,9 @@ export function DevicesPage({ canManage, userId, role }: { canManage: boolean; u
     const [d,b,u]=await Promise.all([
       supabase.from("devices").select("id,business_id,name,device_type,serial_number,assigned_user_id,custody_status,handover_date,return_date,handover_return_notes,phone_number,whatsapp_number").order("name"),
       supabase.from("businesses").select("id,name,code").eq("status","active").order("name"),
-      supabase.from("prمنiles").select("id,full_name").eq("status","active").order("full_name")
+      supabase.from("profiles").select("id,full_name").eq("status","active").order("full_name")
     ]);
-    const e=[d.error,b.error,u.error].find(Boolean); if(e)setError(e.message); else {setDevices((d.data??[]) as Device[]);setBusinesses((b.data??[]) as Business[]);setUsers((u.data??[]) as UserPrمنile[]);}
+    const e=[d.error,b.error,u.error].find(Boolean); if(e)setError(e.message); else {setDevices((d.data??[]) as Device[]);setBusinesses((b.data??[]) as Business[]);setUsers((u.data??[]) as UserProfile[]);}
     setLoading(false);
   }
   useEffect(()=>{void load()},[]);
@@ -38,7 +38,7 @@ export function DevicesPage({ canManage, userId, role }: { canManage: boolean; u
   const userMap=useMemo(()=>new Map(users.map(u=>[u.id,u])),[users]);
   const filtered=devices.filter(d=>{const q=search.trim().toLowerCase();return (!q||[d.name,d.serial_number,d.phone_number,d.whatsapp_number,userMap.get(d.assigned_user_id??"")?.full_name].some(v=>v?.toLowerCase().includes(q)))&&(custody==="all"||d.custody_status===custody)});
 
-  function reset(){setForm({business_id:businesses[0]?.name??"",name:"",device_type:"iالهاتف",serial_number:"",assigned_user_id:"",custody_status:"not_assigned",handover_date:null,return_date:null,handover_return_notes:"",phone_number:"",whatsapp_number:""});setCredentials(emptyCredentials);setتعديلing(null);setSaveError("")}
+  function reset(){setForm({business_id:businesses[0]?.name??"",name:"",device_type:"الهاتف",serial_number:"",assigned_user_id:"",custody_status:"not_assigned",handover_date:null,return_date:null,handover_return_notes:"",phone_number:"",whatsapp_number:""});setCredentials(emptyCredentials);setتعديلing(null);setSaveError("")}
   function startتعديل(d:Device){setتعديلing(d.id);setShowForm(true);setForm({...d,business_id:businessMap.get(d.business_id)?.name??d.business_id,assigned_user_id:d.assigned_user_id?userMap.get(d.assigned_user_id)?.full_name??d.assigned_user_id:""});setCredentials(emptyCredentials);setSaveError("")}
 
   async function save(e:FormEvent){e.preventDefault();if(!supabase||!canManage)return;setSaving(true);setSaveError("");
@@ -51,7 +51,7 @@ export function DevicesPage({ canManage, userId, role }: { canManage: boolean; u
     if(!business){setSaveError("يجب أن يطابق اسم الشركة أو رمزها شركة موجودة.");setSaving(false);return;}
     if(employeeText&&!employee){setSaveError("يجب أن يطابق الموظف المسؤول اسم موظف موجود.");setSaving(false);return;}
     if(!custodyStatuses.includes(custodyText as Device["custody_status"])){setSaveError("حالة العهدة يجب أن تكون: غير مسندة، لدى الموظف، أو مُعادة.");setSaving(false);return;}
-    const payload={...form,business_id:business.id,assigned_user_id:employee?.id??null,custody_status:custodyText as Device["custody_status"],device_type:"iالهاتف",serial_number:form.serial_number?.trim()||null,phone_number:form.phone_number?.trim()||null,whatsapp_number:form.whatsapp_number?.trim()||null,handover_return_notes:form.handover_return_notes?.trim()||null};
+    const payload={...form,business_id:business.id,assigned_user_id:employee?.id??null,custody_status:custodyText as Device["custody_status"],device_type:"الهاتف",serial_number:form.serial_number?.trim()||null,phone_number:form.phone_number?.trim()||null,whatsapp_number:form.whatsapp_number?.trim()||null,handover_return_notes:form.handover_return_notes?.trim()||null};
     const result=editing?await supabase.from("devices").update(payload).eq("id",editing).select("id").single():await supabase.from("devices").insert(payload).select("id").single();
     if(result.error||!result.data){setSaveError(result.error?.message??"تعذر حفظ البيانات.");setSaving(false);return;}
     const id=result.data.id;
