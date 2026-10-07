@@ -97,7 +97,7 @@ The Phase 2 database migration is present in the repository but has **not yet be
 - [ ] Select and verify an MDM provider and its API capabilities. Orchard MDM remains a candidate for evaluation only, not approved.
 - [ ] Audit existing iPhones and approve a data-preserving enrollment plan before changing devices.
 - [ ] Implement server-side provider integration, tenant-scoped authorization, and verified telemetry ingestion.
-- [ ] Implement automatic dashboard updates and stale-data indicators.
+- [x] Implement automatic dashboard updates and stale-data indicators.
 - [ ] Configure and test adult-content filtering and app policies on a test device.
 - [ ] Verify RLS, audit logging, tests, and production build.
 
