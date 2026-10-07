@@ -36,6 +36,8 @@ Each iPhone record supports:
 - Return date
 - Handover / return notes
 
+The Company iPhones page is also being evolved into a controlled device-status dashboard. It can display the last provider-reported connection state, current application when a trusted MDM/telemetry provider supplies it, account scope as an administrative classification (personal/company/unknown), and the business-approved application list. The UI must show unavailable/stale status when no trusted telemetry exists; it must never invent current-app data.
+
 ## Social Media Accounts
 
 Each account supports:
@@ -99,7 +101,17 @@ The Phase 2 database migration is present in the repository but has **not yet be
 - [ ] Configure and test adult-content filtering and app policies on a test device.
 - [ ] Verify RLS, audit logging, tests, and production build.
 
-Detailed plan: [`docs/PHASE_2_DEVICE_MANAGEMENT.md`](docs/PHASE_2_DEVICE_MANAGEMENT.md).
+### Controlled device-status dashboard
+
+- [x] Add a dashboard data contract for connection state, last-seen time, current reported app, observation time, and administrative account scope.
+- [x] Reuse the existing approved-app catalog to mark the reported current app as authorized or not authorized.
+- [x] Keep actual account usernames/identities, messages, screenshots, keystrokes, and usage-duration telemetry out of BCS.
+- [ ] Apply and verify the device-status telemetry migration in the target Supabase environment.
+- [ ] Select an approved MDM/telemetry provider that can supply the required current-app signal.
+- [ ] Implement server-side provider ingestion and stale-data handling.
+- [ ] Test with a non-production device before enabling any production enrollment.
+
+Detailed plan: `docs/PHASE_2_DEVICE_MANAGEMENT.md`.
 
 No MDM provider is connected and no actual device monitoring or blocking policy is active yet. Do not erase, reset, sign out of Apple Accounts, or enroll production devices until the migration impact has been reviewed.
 
