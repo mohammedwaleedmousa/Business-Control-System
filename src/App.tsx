@@ -7,6 +7,21 @@ import { routes } from "./routes";
 import { config } from "./config/env";
 import { supabase } from "./lib/supabase";
 
+type Business = {
+  id: string;
+  name: string;
+  slug: string;
+  code: string;
+  status: "active" | "inactive";
+};
+
+type UserProfile = {
+  id: string;
+  full_name: string | null;
+  role: "admin" | "manager" | "operator" | "viewer";
+  status: "active" | "inactive";
+};
+
 type Profile = {
   id: string;
   full_name: string | null;
@@ -21,6 +36,7 @@ export default function App() {
   const [profileReady, setProfileReady] = useState(!supabase);
   const [profileError, setProfileError] = useState("");
   const [businesses, setBusinesses] = useState<Business[]>([]);
+  const [userCount, setUserCount] = useState(0);
   const [path, setPath] = useState(window.location.pathname);
 
   useEffect(() => {
@@ -88,6 +104,18 @@ export default function App() {
     return () => { active = false; };
   }, [session]);
 
+  useEffect(() => {
+    if (!supabase || !session?.user.id || profile?.role !== "admin") {
+      setUserCount(0);
+      return;
+    }
+    let active = true;
+    supabase.from("profiles").select("id", { count: "exact", head: true }).then(({ count }) => {
+      if (active) setUserCount(count ?? 0);
+    });
+    return () => { active = false; };
+  }, [session, profile?.role]);
+
   const currentRoute = useMemo(
     () => routes.find((route) => route.path === path) ?? routes[0],
     [path],
@@ -126,7 +154,7 @@ export default function App() {
     <AppShell>
       <div className="session-bar">
         <span>{profile.full_name || session.user.email}</span>
-        <span>{profile.role} · {businesses.length} businesses</span>
+        <span>{profile.role} · {businesses.length} businesses{profile.role === "admin" ? ` · ${userCount} users` : ""}</span>
         <button type="button" onClick={() => supabase?.auth.signOut()}>Sign out</button>
       </div>
       <nav className="navigation" aria-label="Primary">
