@@ -11,6 +11,7 @@ import { AccountsPage } from "./components/AccountsPage";
 import { SocialPlatformsPage } from "./components/SocialPlatformsPage";
 import { DevicesPage } from "./components/DevicesPage";
 import { BitwardenRefsPage } from "./components/BitwardenRefsPage";
+import { DashboardPage } from "./components/DashboardPage";
 
 type Business = {
   id: string;
@@ -144,6 +145,24 @@ export default function App() {
           <h1>Profile unavailable</h1>
           <p>{profileError || "Your BCS profile has not been provisioned yet."}</p>
         </section>
+      </AppShell>
+    );
+  }
+
+  if (currentRoute.path === "/") {
+    return (
+      <AppShell>
+        <div className="session-bar">
+          <span>{profile.full_name || session.user.email}</span>
+          <span>{profile.role}</span>
+          <button type="button" onClick={() => supabase?.auth.signOut()}>Sign out</button>
+        </div>
+        <nav className="navigation" aria-label="Primary">
+          {routes.map((route) => (
+            <button key={route.path} type="button" className={route.path === currentRoute.path ? "nav-item active" : "nav-item"} onClick={() => navigate(route.path)}>{route.label}</button>
+          ))}
+        </nav>
+        <DashboardPage />
       </AppShell>
     );
   }
