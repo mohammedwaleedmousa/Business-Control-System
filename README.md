@@ -82,6 +82,22 @@ Phase 1 completion requires:
 - Credential reveal authorization verification
 - Final diff review for unrelated changes
 
+## Phase 2 — Company iPhone management
+
+Phase 2 is being scoped on branch `phase-2-device-management`. It will integrate an Apple-compatible mobile device management (MDM) provider for device policy and supported telemetry, then display verified updates in BCS. BCS cannot independently monitor unmanaged iPhones, and standard MDM does not guarantee the currently foregrounded app or the active account inside Instagram.
+
+- [x] Document Apple capability limits, target architecture, privacy controls, and safe enrollment prerequisites.
+- [ ] Select and verify an MDM provider and its API capabilities.
+- [ ] Audit existing iPhones and approve a data-preserving enrollment plan before changing devices.
+- [ ] Implement server-side provider integration, tenant-scoped authorization, and verified telemetry ingestion.
+- [ ] Implement automatic dashboard updates and stale-data indicators.
+- [ ] Configure and test adult-content filtering and app policies on a test device.
+- [ ] Verify RLS, audit logging, tests, and production build.
+
+Detailed plan: [`docs/PHASE_2_DEVICE_MANAGEMENT.md`](docs/PHASE_2_DEVICE_MANAGEMENT.md).
+
+No MDM provider is connected and no actual device monitoring or blocking policy is active yet. Do not erase, reset, sign out of Apple Accounts, or enroll production devices until the migration impact has been reviewed.
+
 ## Current status
 
-Phase 1 implementation in progress on branch phase-1-company-iphones-social-accounts.
+Phase 1 remains the existing two-module scope. Phase 2 planning is documented on branch `phase-2-device-management`; no Phase 1 features were intentionally changed.
