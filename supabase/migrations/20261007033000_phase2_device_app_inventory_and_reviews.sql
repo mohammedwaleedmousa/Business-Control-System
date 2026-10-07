@@ -174,7 +174,10 @@ grant all on public.device_app_reviews to service_role;
 drop policy if exists "active users can read approved device apps" on public.approved_device_apps;
 create policy "active users can read approved device apps"
 on public.approved_device_apps for select to authenticated
-using (exists (select 1 from public.profiles p where p.id = (select auth.uid()) and p.status = 'active'));
+using (
+  exists (select 1 from public.profiles p where p.id = (select auth.uid()) and p.status = 'active')
+  and (public.is_business_member(business_id) or public.is_bcs_admin())
+);
 
 drop policy if exists "admins manage approved device apps" on public.approved_device_apps;
 create policy "admins manage approved device apps"
@@ -193,7 +196,10 @@ using (
 drop policy if exists "active users can read app reviews" on public.device_app_reviews;
 create policy "active users can read app reviews"
 on public.device_app_reviews for select to authenticated
-using (exists (select 1 from public.profiles p where p.id = (select auth.uid()) and p.status = 'active'));
+using (
+  exists (select 1 from public.profiles p where p.id = (select auth.uid()) and p.status = 'active')
+  and (public.is_business_member(business_id) or public.is_bcs_admin())
+);
 
 drop policy if exists "admins manage app reviews" on public.device_app_reviews;
 create policy "admins manage app reviews"
