@@ -241,3 +241,11 @@ P5.4 expands Accounts with business and platform context, search and status/busi
 - Added the missing Users, Activity, and Settings workspace pages and connected them to routing.
 - Kept the secret-storage rule: BCS stores operational metadata and Bitwarden references, never secret values.
 - UI Definition of Done remains: tested, secured, documented, and accepted.
+
+
+### Latest UI verification pass
+- Light workspace background and dark sidebar confirmed in the committed stylesheet.
+- Shared control sizing is defined centrally for buttons and form controls.
+- Digital Assets type filtering is functional.
+- Users, Activity, and Settings routes are connected in the application shell.
+- Repository has no GitHub Actions workflow configured, so automated build status is not available from GitHub; Cloudflare remains the deployment build verifier.
