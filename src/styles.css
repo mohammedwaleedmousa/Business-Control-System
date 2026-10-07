@@ -1,18 +1,98 @@
 * { box-sizing: border-box; }
-:root { font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #18181b; background: #f7f7f8; }
+
+:root {
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: var(--text-900);
+  background: var(--surface-page);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  --text-900: #18181b;
+  --text-700: #3f3f46;
+  --text-500: #71717a;
+  --border: #e4e4e7;
+  --border-strong: #a1a1aa;
+  --surface-page: #f7f7f8;
+  --surface: #ffffff;
+  --surface-muted: #f4f4f5;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 4%);
+}
+
 body { margin: 0; min-width: 320px; min-height: 100vh; }
-button { font: inherit; }
+
+button, input, select, textarea { font: inherit; }
+button { cursor: pointer; }
+
 .app-shell { min-height: 100vh; }
-.app-header { min-height: 64px; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e4e4e7; background: #fff; }
-.app-header > div { display: flex; align-items: center; gap: 12px; }
+
+.app-header {
+  min-height: 64px;
+  padding: 0 var(--space-6);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.app-header > div { display: flex; align-items: center; gap: var(--space-3); }
 .brand-mark { font-size: 12px; font-weight: 800; letter-spacing: .12em; }
 .brand-name { font-weight: 650; }
-.environment-badge { padding: 5px 9px; border: 1px solid #e4e4e7; border-radius: 999px; font-size: 12px; color: #52525b; }
-.app-content { max-width: 1180px; margin: 0 auto; padding: 24px; }
-.navigation { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 32px; }
-.nav-item { border: 1px solid #e4e4e7; border-radius: 8px; background: #fff; padding: 8px 12px; color: #52525b; cursor: pointer; }
-.nav-item.active { color: #18181b; border-color: #a1a1aa; }
-.page-placeholder { padding: 56px 0; }
-.page-placeholder .eyebrow { margin: 0 0 8px; font-size: 12px; font-weight: 750; letter-spacing: .16em; }
-.page-placeholder h1 { margin: 0 0 12px; font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.05; }
-.page-placeholder p { margin: 0; max-width: 720px; color: #52525b; line-height: 1.6; }
+.environment-badge {
+  padding: 5px 9px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 12px;
+  color: var(--text-500);
+}
+
+.app-content { max-width: 1180px; margin: 0 auto; padding: var(--space-6); }
+
+.navigation {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-8);
+}
+
+.nav-item {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  padding: 8px 12px;
+  color: var(--text-500);
+  box-shadow: var(--shadow-sm);
+}
+
+.nav-item:hover { border-color: var(--border-strong); color: var(--text-900); }
+.nav-item.active { color: var(--text-900); border-color: var(--border-strong); background: var(--surface-muted); }
+
+.page-placeholder { padding: var(--space-10) 0; }
+.page-placeholder .eyebrow {
+  margin: 0 0 var(--space-2);
+  font-size: 12px;
+  font-weight: 750;
+  letter-spacing: .16em;
+}
+.page-placeholder h1 {
+  margin: 0 0 var(--space-3);
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  line-height: 1.05;
+}
+.page-placeholder p { margin: 0; max-width: 720px; color: var(--text-500); line-height: 1.6; }
+
+@media (max-width: 640px) {
+  .app-header { padding: 0 var(--space-4); }
+  .brand-name { display: none; }
+  .app-content { padding: var(--space-4); }
+}
