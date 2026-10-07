@@ -5,16 +5,25 @@ Internal business management system for **Genan Boutique** and **Flamingo Park**
 ## Status
 
 - **Overall:** IN PROGRESS
-- **Current Phase:** Phase 1 — Architecture
-- **Last Completed Task:** P1.5 Environment/config architecture
+- **Current Phase:** Phase 3 — Auth & Permissions
+- **Last Completed Task:** P2.5 Indexes/constraints
 
 ## Stack
 
 - React 19
 - Vite
 - TypeScript
-- Supabase (planned)
+- Supabase
 - Lightweight custom UI foundation
+
+## Supabase
+
+- Project: `business-control-system`
+- Project ref: `rqdvnpzbqwtvhuonowor`
+- Region: `eu-central-1`
+- Database foundation: complete
+- RLS: enabled on all BCS tables
+- Security advisor: no security lints after function execution hardening
 
 ## Master Checklist
 
@@ -33,11 +42,11 @@ Internal business management system for **Genan Boutique** and **Flamingo Park**
 - [x] P1.5 Environment/config architecture
 
 ### Phase 2 — Supabase
-- [ ] P2.1 Supabase project
-- [ ] P2.2 Database schema
-- [ ] P2.3 Migrations
-- [ ] P2.4 RLS
-- [ ] P2.5 Indexes/constraints
+- [x] P2.1 Supabase project
+- [x] P2.2 Database schema
+- [x] P2.3 Migrations
+- [x] P2.4 RLS
+- [x] P2.5 Indexes/constraints
 
 ### Phase 3 — Auth & Permissions
 - [ ] P3.1 Authentication
@@ -108,17 +117,40 @@ BCS must **never** store passwords, API keys, access/refresh tokens, private key
 
 BCS may store operational metadata and a secure Bitwarden item reference. Secrets remain in Bitwarden.
 
+## Database Foundation
+
+Core tables created:
+
+- `businesses`
+- `profiles`
+- `business_members`
+- `bitwarden_refs`
+- `social_platforms`
+- `accounts`
+- `digital_assets`
+- `devices`
+- `activity_logs`
+
+Initial business records: Genan Boutique and Flamingo Park.
+
+Initial social platforms: Instagram, Facebook, TikTok, WhatsApp, X, YouTube.
+
 ## Progress Log
 
 | Task | Status |
 |---|---|
 | P0.1 Repository baseline | Complete |
 | P0.2 Git/branch strategy | Complete |
-| P0.3 .gitignore | Complete |
-| P0.4 .env.example | Complete |
+| P0.3 `.gitignore` | Complete |
+| P0.4 `.env.example` | Complete |
 | P0.5 Initial project configuration | Complete |
 | P1.1 Framework + TypeScript | Complete |
 | P1.2 React project structure | Complete |
 | P1.3 Routing | Complete |
 | P1.4 UI system | Complete |
 | P1.5 Environment/config architecture | Complete |
+| P2.1 Supabase project | Complete |
+| P2.2 Database schema | Complete |
+| P2.3 Migrations | Complete |
+| P2.4 RLS | Complete |
+| P2.5 Indexes/constraints | Complete |
