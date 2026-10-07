@@ -11,7 +11,7 @@ export function AuthScreen() {
   async function signIn(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!supabase) {
-      setError("لم يتم إعداد Supabase. أضف إعدادات Supabase العامة الخاصة بـ Vite.");
+      setError("لم يتم إعداد خدمة قاعدة البيانات. أضف إعدادات خدمة قاعدة البيانات العامة الخاصة بـ إعدادات التطبيق.");
       return;
     }
     setPending(true);
