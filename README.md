@@ -249,3 +249,11 @@ P5.4 expands Accounts with business and platform context, search and status/busi
 - Digital Assets type filtering is functional.
 - Users, Activity, and Settings routes are connected in the application shell.
 - Repository has no GitHub Actions workflow configured, so automated build status is not available from GitHub; Cloudflare remains the deployment build verifier.
+
+
+## UI refinement pass — 2026-10-07
+
+- Dashboard, business registry, account management, devices, digital assets, platforms, Bitwarden references, users, activity, and settings remain connected to the sidebar workspace.
+- Account platform filtering is now functional.
+- Removed unused application state from the root shell.
+- Light workspace + dark sidebar visual direction is retained consistently.
