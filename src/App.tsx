@@ -26,7 +26,6 @@ export default function App() {
   const [profileReady, setProfileReady] = useState(!supabase);
   const [profileError, setProfileError] = useState("");
   const [businesses, setBusinesses] = useState<Business[]>([]);
-  const [userCount, setUserCount] = useState(0);
   const [path, setPath] = useState(window.location.pathname);
 
   useEffect(() => {
@@ -54,13 +53,6 @@ export default function App() {
     supabase.from("businesses").select("id, name, slug, code, status").order("name").then(({ data }) => { if (active) setBusinesses((data ?? []) as Business[]); });
     return () => { active = false; };
   }, [session]);
-
-  useEffect(() => {
-    if (!supabase || !session?.user.id || profile?.role !== "admin") { setUserCount(0); return; }
-    let active = true;
-    supabase.from("profiles").select("id", { count: "exact", head: true }).then(({ count }) => { if (active) setUserCount(count ?? 0); });
-    return () => { active = false; };
-  }, [session, profile?.role]);
 
   const currentRoute = useMemo(() => routes.find((route) => route.path === path) ?? routes[0], [path]);
   function navigate(nextPath: string) { window.history.pushState({}, "", nextPath); setPath(nextPath); }
