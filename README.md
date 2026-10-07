@@ -5,20 +5,28 @@ Internal business management system for **Genan Boutique** and **Flamingo Park**
 ## Status
 
 - **Overall:** IN PROGRESS
-- **Current Phase:** Phase 0 — Repository Foundation
-- **Last Completed Task:** P0.1 Repository baseline
+- **Current Phase:** Phase 1 — Architecture
+- **Last Completed Task:** P1.1 Framework + TypeScript foundation
+
+## Stack
+
+- Next.js
+- React
+- TypeScript
+- Supabase (planned)
+- UI system (planned)
 
 ## Master Checklist
 
 ### Phase 0 — Foundation
 - [x] P0.1 Repository baseline
-- [ ] P0.2 Git/branch strategy
-- [ ] P0.3 `.gitignore`
-- [ ] P0.4 `.env.example`
-- [ ] P0.5 Initial project configuration
+- [x] P0.2 Git/branch strategy
+- [x] P0.3 `.gitignore`
+- [x] P0.4 `.env.example`
+- [x] P0.5 Initial project configuration
 
 ### Phase 1 — Architecture
-- [ ] P1.1 Framework + TypeScript
+- [x] P1.1 Framework + TypeScript
 - [ ] P1.2 Project structure
 - [ ] P1.3 Routing
 - [ ] P1.4 UI system
@@ -105,3 +113,8 @@ BCS may store operational metadata and a secure Bitwarden item reference. Secret
 | Task | Status |
 |---|---|
 | P0.1 Repository baseline | Complete |
+| P0.2 Git/branch strategy | Complete |
+| P0.3 .gitignore | Complete |
+| P0.4 .env.example | Complete |
+| P0.5 Initial project configuration | Complete |
+| P1.1 Framework + TypeScript foundation | Complete |
