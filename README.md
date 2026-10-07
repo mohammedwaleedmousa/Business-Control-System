@@ -105,7 +105,7 @@ Phase 1 remains the existing two-module scope. Phase 2 planning is documented on
 
 ### MDM provider review — 2026-10-07
 
-- Orchard MDM remains **evaluation-only**, not approved for production. The preliminary review found an MIT license, a very new repository, no published releases or visible community activity at review time, and a CI workflow whose latest result has not been independently verified here.
+- Orchard MDM remains **evaluation-only**, not approved for production. The preliminary review found an MIT license, a very new repository, no published releases or visible community activity at review time, and a CI run that visibly passed on 2026-10-05 (build/test success is not an independent security audit).
 - A limited read of authentication code shows bcrypt password hashing, role checks, and CSRF checks, but this is **not** a full security audit.
 - Next: pin a commit, run the project tests/build and security checks, review webhook/API-key and secret/certificate handling, then use synthetic data and simulated devices only.
 - Do not connect Orchard to BCS, enter real Apple certificates/API secrets, or enroll company iPhones until the checks pass and a separate approval is recorded.
