@@ -23,9 +23,9 @@ export function AuthScreen() {
 
   return (
     <section className="auth-card">
-      <p className="eyebrow">BCS</p>
+      <p className="eyebrow">نظام التحكم بالأعمال</p>
       <h1>تسجيل الدخول</h1>
-      <p className="auth-description">استخدم حساب BCS المصرح لك به للمتابعة.</p>
+      <p className="auth-description">استخدم حسابك المصرح له بالوصول إلى النظام للمتابعة.</p>
       <form onSubmit={signIn} className="auth-form">
         <label>
           البريد الإلكتروني
