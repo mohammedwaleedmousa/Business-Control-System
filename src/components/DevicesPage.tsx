@@ -7,17 +7,17 @@ type Device = {
   handover_date: string | null; return_date: string | null; handover_return_notes: string | null;
   phone_number: string | null; whatsapp_number: string | null;
 };
-type Business = { id: string; name: string; code: string };
+type الشركة = { id: string; name: string; code: string };
 type UserProfile = { id: string; full_name: string | null };
 type Credentials = { apple_id: string; apple_password: string; phone_passcode: string; authentication_2fa: string };
 
 const custodyStatuses = ["not_assigned", "in_employee_custody", "returned"] as const;
 const custodyLabels: Record<string,string> = { not_assigned:"غير مسندة", in_employee_custody:"لدى الموظف", returned:"مُعادة" };
-const credentialLabels: Record<string,string> = { apple_id:"iCloud / Apple ID", apple_password:"كلمة مرور iCloud", phone_passcode:"رمز دخول الهاتف", authentication_2fa:"المصادقة / التحقق بخطوتين" };
+const credentialLabels: Record<string,string> = { apple_id:"حساب أبل السحابي", apple_password:"كلمة مرور الحساب السحابي", phone_passcode:"رمز دخول الهاتف", authentication_2fa:"المصادقة / التحقق بخطوتين" };
 const emptyCredentials: Credentials = { apple_id: "", apple_password: "", phone_passcode: "", authentication_2fa: "" };
 
 export function DevicesPage({ canManage, userId, role }: { canManage: boolean; userId: string; role: string }) {
-  const [devices,setDevices]=useState<Device[]>([]),[businesses,setBusinesses]=useState<Business[]>([]),[users,setUsers]=useState<UserProfile[]>([]);
+  const [devices,setDevices]=useState<Device[]>([]),[businesses,setالشركةes]=useState<الشركة[]>([]),[users,setUsers]=useState<UserProfile[]>([]);
   const [search,setSearch]=useState(""),[custody,setالعهدة]=useState(""),[showForm,setShowForm]=useState(false),[editing,setتعديلing]=useState<string|null>(null);
   const [form,setForm]=useState<Omit<Device,"id">>({business_id:"",name:"",device_type:"الهاتف",serial_number:"",assigned_user_id:null,custody_status:"not_assigned",handover_date:null,return_date:null,handover_return_notes:"",phone_number:"",whatsapp_number:""});
   const [credentials,setCredentials]=useState<Credentials>(emptyCredentials),[showCredentials,setShowCredentials]=useState(false),[credentialId,setCredentialId]=useState<string|null>(null);
@@ -29,7 +29,7 @@ export function DevicesPage({ canManage, userId, role }: { canManage: boolean; u
       supabase.from("businesses").select("id,name,code").eq("status","active").order("name"),
       supabase.from("profiles").select("id,full_name").eq("status","active").order("full_name")
     ]);
-    const e=[d.error,b.error,u.error].find(Boolean); if(e)setError(e.message); else {setDevices((d.data??[]) as Device[]);setBusinesses((b.data??[]) as Business[]);setUsers((u.data??[]) as UserProfile[]);}
+    const e=[d.error,b.error,u.error].find(Boolean); if(e)setError(e.message); else {setDevices((d.data??[]) as Device[]);setالشركةes((b.data??[]) as الشركة[]);setUsers((u.data??[]) as UserProfile[]);}
     setLoading(false);
   }
   useEffect(()=>{void load()},[]);
@@ -68,9 +68,9 @@ export function DevicesPage({ canManage, userId, role }: { canManage: boolean; u
   async function copy(value:string){if(value)await navigator.clipboard.writeText(value)}
 
   return <section className="data-page">
-    <div className="data-page-header"><div><p className="eyebrow">BCS · المرحلة الأولى</p><h1>هواتف الشركة</h1><p>إدارة هواتف الشركة، وبيانات الاتصال، وحساب Apple، وبيانات الدخول المحمية.</p></div><div className="data-page-actions"><span className="data-count">{filtered.length} من {devices.length} هاتفًا</span>{canManage&&<button className="primary-button" onClick={()=>{reset();setShowForm(v=>!v)}}>{showForm?"إغلاق":"إضافة هاتف"}</button>}</div></div>
+    <div className="data-page-header"><div><p className="eyebrow">المرحلة الأولى</p><h1>هواتف الشركة</h1><p>إدارة هواتف الشركة، وبيانات الاتصال، وحساب Apple، وبيانات الدخول المحمية.</p></div><div className="data-page-actions"><span className="data-count">{filtered.length} من {devices.length} هاتفًا</span>{canManage&&<button className="primary-button" onClick={()=>{reset();setShowForm(v=>!v)}}>{showForm?"إغلاق":"إضافة هاتف"}</button>}</div></div>
     {canManage&&showForm&&<form className="inline-form" onSubmit={save}>
-      <label>Business<input value={form.business_id} onChange={e=>setForm({...form,business_id:e.target.value})} placeholder="اسم الشركة أو رمزها" required/></label>
+      <label>الشركة<input value={form.business_id} onChange={e=>setForm({...form,business_id:e.target.value})} placeholder="اسم الشركة أو رمزها" required/></label>
       <label>اسم الهاتف<input value={form.name} onChange={e=>setForm({...form,name:e.target.value})} required/></label>
       <label>الموظف المسؤول<input value={form.assigned_user_id??""} onChange={e=>setForm({...form,assigned_user_id:e.target.value})} placeholder="اسم الموظف"/></label>
       <label>رقم الاتصال<input value={form.phone_number??""} onChange={e=>setForm({...form,phone_number:e.target.value})}/></label>
@@ -81,15 +81,15 @@ export function DevicesPage({ canManage, userId, role }: { canManage: boolean; u
       <label>تاريخ الإعادة<input type="date" value={form.return_date??""} onChange={e=>setForm({...form,return_date:e.target.value||null})}/></label>
       <label className="field-span-2">ملاحظات التسليم / الإعادة<textarea value={form.handover_return_notes??""} onChange={e=>setForm({...form,handover_return_notes:e.target.value})}/></label>
       <div className="credential-section field-span-2"><strong>بيانات الدخول المحمية</strong><span>تُحفظ داخل خزنة BCS ولا تُعاد ضمن استعلامات الأجهزة العادية.</span></div>
-      <label>iCloud / Apple ID<input value={credentials.apple_id} onChange={e=>setCredentials({...credentials,apple_id:e.target.value})}/></label>
-      <label>كلمة مرور iCloud<input type="password" value={credentials.apple_password} onChange={e=>setCredentials({...credentials,apple_password:e.target.value})} autoComplete="new-password"/></label>
+      <label>حساب أبل السحابي<input value={credentials.apple_id} onChange={e=>setCredentials({...credentials,apple_id:e.target.value})}/></label>
+      <label>كلمة مرور الحساب السحابي<input type="password" value={credentials.apple_password} onChange={e=>setCredentials({...credentials,apple_password:e.target.value})} autoComplete="new-password"/></label>
       <label>رمز دخول الهاتف<input type="password" value={credentials.phone_passcode} onChange={e=>setCredentials({...credentials,phone_passcode:e.target.value})} autoComplete="new-password"/></label>
       <label>المصادقة / التحقق بخطوتين<input value={credentials.authentication_2fa} onChange={e=>setCredentials({...credentials,authentication_2fa:e.target.value})}/></label>
       {saveError&&<p className="auth-error field-span-2">{saveError}</p>}
       <div className="form-actions field-span-2"><button className="primary-button" disabled={saving}>{saving?"جارٍ الحفظ…":editing?"حفظ التغييرات":"إنشاء هاتف"}</button><button type="button" className="secondary-button" onClick={()=>{setShowForm(false);reset()}}>إلغاء</button></div>
     </form>}
-    <div className="filter-bar"><input placeholder="Search هاتفًا…" value={search} onChange={e=>setSearch(e.target.value)}/><input placeholder="تصفية حسب حالة العهدة…" value={custody.replaceAll("_"," ")} onChange={e=>setالعهدة(e.target.value.toLowerCase().replaceAll(" ","_"))}/></div>
-    {loading&&<div className="loading-state">Loading company هاتفًا…</div>}{!loading&&error&&<p className="auth-error">{error}</p>}{!loading&&!error&&!filtered.length&&<div className="empty-state">No company هاتفًا match the current filters.</div>}
+    <div className="filter-bar"><input placeholder="البحث في الهواتف…" value={search} onChange={e=>setSearch(e.target.value)}/><input placeholder="تصفية حسب حالة العهدة…" value={custody.replaceAll("_"," ")} onChange={e=>setالعهدة(e.target.value.toLowerCase().replaceAll(" ","_"))}/></div>
+    {loading&&<div className="loading-state">جارٍ تحميل هواتف الشركة…</div>}{!loading&&error&&<p className="auth-error">{error}</p>}{!loading&&!error&&!filtered.length&&<div className="empty-state">لا توجد هواتف تطابق عوامل التصفية الحالية.</div>}
     {!loading&&!error&&!!filtered.length&&<div className="data-table-wrap"><table className="data-table"><thead><tr><th>الهاتف</th><th>الموظف</th><th>الاتصال</th><th>واتساب</th><th>التسلسلي</th><th>العهدة</th><th>محمي</th><th>الإجراءات</th></tr></thead><tbody>{filtered.map(d=><tr key={d.id}><td><strong>{d.name}</strong></td><td>{d.assigned_user_id?userMap.get(d.assigned_user_id)?.full_name||"مسند":"غير مسند"}</td><td>{d.phone_number||"—"}</td><td>{d.whatsapp_number||"—"}</td><td>{d.serial_number||"—"}</td><td><span className="status-badge">{custodyLabels[d.custody_status]||d.custody_status}</span></td><td>••••••••</td><td><div className="row-actions">{(role==="admin"||d.assigned_user_id===userId)&&<button className="ghost-button" onClick={()=>reveal(d)}>عرض / نسخ</button>}{canManage&&<button className="ghost-button" onClick={()=>startتعديل(d)}>تعديل</button>}</div></td></tr>)}</tbody></table></div>}
     {showCredentials&&credentialId&&<div className="secret-modal"><div className="secret-card"><div className="data-page-header"><div><p className="eyebrow">عرض مصرح</p><h2>بيانات الدخول المحمية</h2><p>تظهر هذه القيم بعد التحقق من الصلاحية فقط، ولا تُعرض ضمن قوائم الأجهزة.</p></div><button className="secondary-button" onClick={()=>setShowCredentials(false)}>إغلاق</button></div>{saveError&&<p className="auth-error">{saveError}</p>}{Object.entries(credentials).map(([key,value])=><div className="secret-row" key={key}><span>{credentialLabels[key]||key}</span><input readOnly type={key.includes("password")||key.includes("passcode")?"password":"text"} value={value}/><button className="ghost-button" onClick={()=>copy(value)}>نسخ</button></div>)}</div></div>}
   </section>;
