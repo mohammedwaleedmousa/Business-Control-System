@@ -6,7 +6,7 @@ Internal business management system for **Genan Boutique** and **Flamingo Park**
 
 - **Overall:** IN PROGRESS
 - **Current Phase:** Phase 3 — Auth & Permissions
-- **Last Completed Task:** P4.2 Users
+- **Last Completed Task:** P4.3 Digital Assets
 
 ## Stack
 
@@ -58,7 +58,7 @@ Internal business management system for **Genan Boutique** and **Flamingo Park**
 ### Phase 4 — Core BCS
 - [x] P4.1 Businesses
 - [x] P4.2 Users
-- [ ] P4.3 Digital Assets
+- [x] P4.3 Digital Assets
 - [ ] P4.4 Accounts
 - [ ] P4.5 Social Platforms
 - [ ] P4.6 Devices
@@ -161,6 +161,11 @@ Initial social platforms: Instagram, Facebook, TikTok, WhatsApp, X, YouTube.
 | P3.5 Business isolation | Complete |
 | P4.1 Businesses | Complete |
 | P4.2 Users | Complete |
+| P4.3 Digital Assets | Complete |
+
+## Digital Assets
+
+P4.3 connects the digital asset registry to the authenticated application. Assets are loaded through RLS with business-scoped access and display only operational metadata such as type, name, identifier, status, and notes. Secret material is never stored in the asset records.
 
 ## Users
 
