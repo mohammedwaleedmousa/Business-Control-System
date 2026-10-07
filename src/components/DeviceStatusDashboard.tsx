@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "../lib/supabase";
+import "./DeviceStatusDashboard.css";
 
 type Device={id:string;business_id:string;name:string;assigned_user_id:string|null;custody_status:string};
 type Profile={id:string;full_name:string|null};
