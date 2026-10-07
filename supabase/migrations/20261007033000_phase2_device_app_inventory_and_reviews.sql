@@ -190,6 +190,7 @@ create policy "active users can read app inventory"
 on public.device_app_inventory for select to authenticated
 using (
   exists (select 1 from public.profiles p where p.id = (select auth.uid()) and p.status = 'active')
+  and (public.is_business_member(business_id) or public.is_bcs_admin())
   and exists (select 1 from public.devices d where d.id = public.device_app_inventory.device_id and d.business_id = public.device_app_inventory.business_id)
 );
 
