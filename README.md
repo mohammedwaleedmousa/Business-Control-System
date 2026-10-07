@@ -6,7 +6,7 @@ Internal business management system for **Genan Boutique** and **Flamingo Park**
 
 - **Overall:** IN PROGRESS
 - **Current Phase:** Phase 1 — Architecture
-- **Last Completed Task:** P1.4 UI system
+- **Last Completed Task:** P1.5 Environment/config architecture
 
 ## Stack
 
@@ -30,7 +30,7 @@ Internal business management system for **Genan Boutique** and **Flamingo Park**
 - [x] P1.2 Project structure
 - [x] P1.3 Routing
 - [x] P1.4 UI system
-- [ ] P1.5 Environment/config architecture
+- [x] P1.5 Environment/config architecture
 
 ### Phase 2 — Supabase
 - [ ] P2.1 Supabase project
@@ -121,3 +121,4 @@ BCS may store operational metadata and a secure Bitwarden item reference. Secret
 | P1.2 React project structure | Complete |
 | P1.3 Routing | Complete |
 | P1.4 UI system | Complete |
+| P1.5 Environment/config architecture | Complete |
