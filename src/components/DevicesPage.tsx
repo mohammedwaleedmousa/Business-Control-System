@@ -80,7 +80,7 @@ export function DevicesPage({ canManage, userId, role }: { canManage: boolean; u
       <label>تاريخ التسليم<input type="date" value={form.handover_date??""} onChange={e=>setForm({...form,handover_date:e.target.value||null})}/></label>
       <label>تاريخ الإعادة<input type="date" value={form.return_date??""} onChange={e=>setForm({...form,return_date:e.target.value||null})}/></label>
       <label className="field-span-2">ملاحظات التسليم / الإعادة<textarea value={form.handover_return_notes??""} onChange={e=>setForm({...form,handover_return_notes:e.target.value})}/></label>
-      <div className="credential-section field-span-2"><strong>بيانات الدخول المحمية</strong><span>تُحفظ داخل خزنة BCS ولا تُعاد ضمن استعلامات الأجهزة العادية.</span></div>
+      <div className="credential-section field-span-2"><strong>بيانات الدخول المحمية</strong><span>تُحفظ داخل الخزنة الآمنة ولا تُعاد ضمن استعلامات الأجهزة العادية.</span></div>
       <label>حساب أبل السحابي<input value={credentials.apple_id} onChange={e=>setCredentials({...credentials,apple_id:e.target.value})}/></label>
       <label>كلمة مرور الحساب السحابي<input type="password" value={credentials.apple_password} onChange={e=>setCredentials({...credentials,apple_password:e.target.value})} autoComplete="new-password"/></label>
       <label>رمز دخول الهاتف<input type="password" value={credentials.phone_passcode} onChange={e=>setCredentials({...credentials,phone_passcode:e.target.value})} autoComplete="new-password"/></label>
