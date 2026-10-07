@@ -79,6 +79,49 @@ after insert or update of bundle_id, business_id, is_installed
 on public.device_app_inventory
 for each row execute function public.bcs_flag_unapproved_device_app();
 
+create or replace function public.bcs_stamp_device_app_review()
+returns trigger
+language plpgsql
+security invoker
+set search_path = ''
+as $
+begin
+  if new.status in ('discussed', 'closed') and new.status is distinct from old.status then
+    new.reviewed_by = (select auth.uid());
+    new.reviewed_at = now();
+  end if;
+  return new;
+end;
+$;
+
+drop trigger if exists device_app_reviews_stamp_review on public.device_app_reviews;
+create trigger device_app_reviews_stamp_review
+before update of status on public.device_app_reviews
+for each row execute function public.bcs_stamp_device_app_review();
+
+create or replace function public.bcs_review_apps_when_approval_removed()
+returns trigger
+language plpgsql
+security invoker
+set search_path = ''
+as $
+begin
+  insert into public.device_app_reviews (inventory_id, business_id, status)
+  select i.id, i.business_id, 'new'
+  from public.device_app_inventory i
+  where i.business_id = old.business_id
+    and i.bundle_id = old.bundle_id
+    and i.is_installed
+  on conflict (inventory_id) do nothing;
+  return old;
+end;
+$;
+
+drop trigger if exists approved_device_apps_review_on_delete on public.approved_device_apps;
+create trigger approved_device_apps_review_on_delete
+after delete on public.approved_device_apps
+for each row execute function public.bcs_review_apps_when_approval_removed();
+
 create index if not exists approved_device_apps_business_idx
   on public.approved_device_apps (business_id, bundle_id);
 create index if not exists device_app_inventory_device_idx
