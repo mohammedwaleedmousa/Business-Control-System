@@ -57,7 +57,7 @@ returns trigger
 language plpgsql
 security invoker
 set search_path = ''
-as $
+as $$
 begin
   if new.is_installed and not exists (
     select 1
@@ -71,7 +71,7 @@ begin
   end if;
   return new;
 end;
-$;
+$$;
 
 drop trigger if exists device_app_inventory_flag_unapproved on public.device_app_inventory;
 create trigger device_app_inventory_flag_unapproved
@@ -84,7 +84,7 @@ returns trigger
 language plpgsql
 security invoker
 set search_path = ''
-as $
+as $$
 begin
   if new.status in ('discussed', 'closed') and new.status is distinct from old.status then
     new.reviewed_by = (select auth.uid());
@@ -92,7 +92,7 @@ begin
   end if;
   return new;
 end;
-$;
+$$;
 
 drop trigger if exists device_app_reviews_stamp_review on public.device_app_reviews;
 create trigger device_app_reviews_stamp_review
@@ -104,7 +104,7 @@ returns trigger
 language plpgsql
 security invoker
 set search_path = ''
-as $
+as $$
 begin
   insert into public.device_app_reviews (inventory_id, business_id, status)
   select i.id, i.business_id, 'new'
@@ -115,7 +115,7 @@ begin
   on conflict (inventory_id) do nothing;
   return old;
 end;
-$;
+$$;
 
 drop trigger if exists approved_device_apps_review_on_delete on public.approved_device_apps;
 create trigger approved_device_apps_review_on_delete
