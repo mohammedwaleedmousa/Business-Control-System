@@ -15,13 +15,6 @@ type Business = {
   status: "active" | "inactive";
 };
 
-type UserProfile = {
-  id: string;
-  full_name: string | null;
-  role: "admin" | "manager" | "operator" | "viewer";
-  status: "active" | "inactive";
-};
-
 type Profile = {
   id: string;
   full_name: string | null;
