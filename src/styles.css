@@ -96,3 +96,17 @@ button { cursor: pointer; }
   .brand-name { display: none; }
   .app-content { padding: var(--space-4); }
 }
+
+.loading-state { padding: 64px 0; color: var(--text-500); }
+.auth-card { max-width: 420px; margin: 10vh auto; padding: 32px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); }
+.auth-card h1 { margin: 0 0 8px; font-size: 32px; }
+.auth-description { margin: 0 0 24px; color: var(--text-500); }
+.auth-form { display: grid; gap: 16px; }
+.auth-form label { display: grid; gap: 6px; font-size: 14px; font-weight: 650; }
+.auth-form input { width: 100%; padding: 10px 12px; border: 1px solid var(--border-strong); border-radius: var(--radius-md); background: var(--surface); color: var(--text-900); }
+.auth-form input:focus { outline: 2px solid var(--border-strong); outline-offset: 1px; }
+.auth-submit { padding: 10px 14px; border: 1px solid var(--text-900); border-radius: var(--radius-md); background: var(--text-900); color: white; font-weight: 650; }
+.auth-submit:disabled { opacity: .6; cursor: wait; }
+.auth-error { margin: 0; color: #b42318; font-size: 14px; }
+.session-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; color: var(--text-500); font-size: 14px; }
+.session-bar button { border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--surface); padding: 7px 10px; color: var(--text-700); }
