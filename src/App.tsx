@@ -10,6 +10,7 @@ import { DigitalAssetsPage } from "./components/DigitalAssetsPage";
 import { AccountsPage } from "./components/AccountsPage";
 import { SocialPlatformsPage } from "./components/SocialPlatformsPage";
 import { DevicesPage } from "./components/DevicesPage";
+import { BitwardenRefsPage } from "./components/BitwardenRefsPage";
 
 type Business = {
   id: string;
@@ -182,6 +183,19 @@ export default function App() {
           <button type="button" onClick={() => supabase?.auth.signOut()}>Sign out</button>
         </div>
         <DevicesPage />
+      </AppShell>
+    );
+  }
+
+  if (currentRoute.path === "/bitwarden") {
+    return (
+      <AppShell>
+        <div className="session-bar">
+          <span>{profile.full_name || session.user.email}</span>
+          <span>{profile.role}</span>
+          <button type="button" onClick={() => supabase?.auth.signOut()}>Sign out</button>
+        </div>
+        <BitwardenRefsPage />
       </AppShell>
     );
   }
