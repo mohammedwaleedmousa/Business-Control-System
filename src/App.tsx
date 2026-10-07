@@ -6,6 +6,7 @@ import { PagePlaceholder } from "./components/PagePlaceholder";
 import { routes } from "./routes";
 import { config } from "./config/env";
 import { supabase } from "./lib/supabase";
+import { DigitalAssetsPage } from "./components/DigitalAssetsPage";
 
 type Business = {
   id: string;
@@ -139,6 +140,19 @@ export default function App() {
           <h1>Profile unavailable</h1>
           <p>{profileError || "Your BCS profile has not been provisioned yet."}</p>
         </section>
+      </AppShell>
+    );
+  }
+
+  if (currentRoute.path === "/assets") {
+    return (
+      <AppShell>
+        <div className="session-bar">
+          <span>{profile.full_name || session.user.email}</span>
+          <span>{profile.role}</span>
+          <button type="button" onClick={() => supabase?.auth.signOut()}>Sign out</button>
+        </div>
+        <DigitalAssetsPage />
       </AppShell>
     );
   }
