@@ -87,7 +87,8 @@ Phase 1 completion requires:
 Phase 2 is being scoped on branch `phase-2-device-management`. It will integrate an Apple-compatible mobile device management (MDM) provider for device policy and supported telemetry, then display verified updates in BCS. BCS cannot independently monitor unmanaged iPhones, and standard MDM does not guarantee the currently foregrounded app or the active account inside Instagram.
 
 - [x] Document Apple capability limits, target architecture, privacy controls, and safe enrollment prerequisites.
-- [ ] Select and verify an MDM provider and its API capabilities.
+- [ ] Select and verify an MDM provider and its API capabilities. Orchard MDM is a candidate for evaluation only, not yet approved.
+- [ ] Implement app inventory comparison against an approved-app list and an administrator review workflow (new → under review → discussed → closed).
 - [ ] Audit existing iPhones and approve a data-preserving enrollment plan before changing devices.
 - [ ] Implement server-side provider integration, tenant-scoped authorization, and verified telemetry ingestion.
 - [ ] Implement automatic dashboard updates and stale-data indicators.
