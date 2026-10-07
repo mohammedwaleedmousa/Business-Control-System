@@ -52,6 +52,33 @@ create table if not exists public.device_app_reviews (
   updated_at timestamptz not null default now()
 );
 
+create or replace function public.bcs_flag_unapproved_device_app()
+returns trigger
+language plpgsql
+security invoker
+set search_path = ''
+as $
+begin
+  if new.is_installed and not exists (
+    select 1
+    from public.approved_device_apps a
+    where a.business_id = new.business_id
+      and a.bundle_id = new.bundle_id
+  ) then
+    insert into public.device_app_reviews (inventory_id, business_id, status)
+    values (new.id, new.business_id, 'new')
+    on conflict (inventory_id) do nothing;
+  end if;
+  return new;
+end;
+$;
+
+drop trigger if exists device_app_inventory_flag_unapproved on public.device_app_inventory;
+create trigger device_app_inventory_flag_unapproved
+after insert or update of bundle_id, business_id, is_installed
+on public.device_app_inventory
+for each row execute function public.bcs_flag_unapproved_device_app();
+
 create index if not exists approved_device_apps_business_idx
   on public.approved_device_apps (business_id, bundle_id);
 create index if not exists device_app_inventory_device_idx
