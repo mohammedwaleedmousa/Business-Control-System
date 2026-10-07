@@ -13,6 +13,7 @@ type AppShellProps = {
 const icons: Record<string, string> = {
   "/devices": "M7 3h10v18H7zM10 6h4M10 18h4",
   "/accounts": "M4 6h16v12H4zM8 10h8M8 14h5",
+  "/device-apps": "M6 4h12v16H6zM9 8h6M9 12h6M9 16h3",
 };
 
 const roleLabels: Record<string, string> = {
