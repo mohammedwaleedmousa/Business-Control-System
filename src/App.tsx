@@ -84,5 +84,16 @@ export default function App() {
   if (currentRoute.path === "/users") return shell(<UsersPage />);
   if (currentRoute.path === "/activity") return shell(<ActivityPage />);
   if (currentRoute.path === "/settings") return shell(<SettingsPage />);
+  if (currentRoute.path === "/locations") return shell(<PagePlaceholder title="Locations" description="Manage physical locations, branches, offices, storage areas, and operational sites." />);
+  if (currentRoute.path === "/departments") return shell(<PagePlaceholder title="Departments" description="Manage departments, ownership, managers, and organizational structure." />);
+  if (currentRoute.path === "/contacts") return shell(<PagePlaceholder title="Contacts" description="Centralize customers, suppliers, partners, staff contacts, and business relationships." />);
+  if (currentRoute.path === "/vendors") return shell(<PagePlaceholder title="Vendors" description="Manage suppliers, service providers, contacts, status, and operational notes." />);
+  if (currentRoute.path === "/projects") return shell(<PagePlaceholder title="Projects" description="Plan projects, ownership, priorities, milestones, deadlines, and delivery status." />);
+  if (currentRoute.path === "/tasks") return shell(<PagePlaceholder title="Tasks" description="Track operational tasks, assignments, priorities, deadlines, blockers, and completion." />);
+  if (currentRoute.path === "/inventory") return shell(<PagePlaceholder title="Inventory" description="Manage stock, SKUs, quantities, reorder levels, locations, and inventory movements." />);
+  if (currentRoute.path === "/subscriptions") return shell(<PagePlaceholder title="Subscriptions" description="Track software, services, plans, renewals, costs, owners, and secure vault references." />);
+  if (currentRoute.path === "/documents") return shell(<PagePlaceholder title="Documents" description="Manage operational documents, versions, owners, status, and storage references." />);
+  if (currentRoute.path === "/incidents") return shell(<PagePlaceholder title="Incidents" description="Track operational incidents, severity, ownership, investigation, resolution, and closure." />);
+  if (currentRoute.path === "/approvals") return shell(<PagePlaceholder title="Approvals" description="Manage approval requests, approvers, decisions, notes, and decision history." />);
   return shell(<PagePlaceholder title={currentRoute.label} description="BCS operational controls are being connected to this workspace." />);
 }
