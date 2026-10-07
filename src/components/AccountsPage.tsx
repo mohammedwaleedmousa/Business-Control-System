@@ -30,8 +30,8 @@ export function AccountsPage({ canManage }: { canManage: boolean }) {
     const q=search.toLowerCase();
     const platformName=a.platform?.[0]?.name ?? "";
     return [a.name,a.handle??"",a.contact_email??"",platformName].some(v=>v.toLowerCase().includes(q))
-      && (status==="all"||a.status===status) && (businessId==="all"||a.business_id===businessId);
-  }), [accounts,search,status,businessId]);
+      && (status==="all"||a.status===status) && (businessId==="all"||a.business_id===businessId) && (platformId==="all"||a.platform?.[0]?.name===platforms.find(p=>p.id===platformId)?.name);
+  }), [accounts,search,status,businessId,platformId,platforms]);
   async function create(e: FormEvent) {
     e.preventDefault(); if (!supabase || !canManage) return; setSaving(true); setError("");
     const {error:insertError}=await supabase.from("accounts").insert({business_id:newBusinessId,platform_id:newPlatformId||null,name:name.trim(),handle:handle.trim()||null,contact_email:contactEmail.trim()||null});
@@ -47,7 +47,7 @@ export function AccountsPage({ canManage }: { canManage: boolean }) {
       <label>Contact email<input type="email" value={contactEmail} onChange={e=>setContactEmail(e.target.value)} placeholder="Optional"/></label>
       <button className="primary-action" type="submit" disabled={saving}>{saving?"Saving…":"Create"}</button>
     </form>}
-    <div className="filter-bar"><input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search accounts…" aria-label="Search accounts"/><select value={status} onChange={e=>setStatus(e.target.value)}><option value="all">All statuses</option><option value="active">Active</option><option value="inactive">Inactive</option><option value="suspended">Suspended</option></select><select value={businessId} onChange={e=>setBusinessId(e.target.value)}><option value="all">All businesses</option>{businesses.map(b=><option key={b.id} value={b.id}>{b.name}</option>)}</select></div>
+    <div className="filter-bar"><input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search accounts…" aria-label="Search accounts"/><select value={status} onChange={e=>setStatus(e.target.value)}><option value="all">All statuses</option><option value="active">Active</option><option value="inactive">Inactive</option><option value="suspended">Suspended</option></select><select value={businessId} onChange={e=>setBusinessId(e.target.value)}><option value="all">All businesses</option>{businesses.map(b=><option key={b.id} value={b.id}>{b.name}</option>)}</select><select value={platformId} onChange={e=>setPlatformId(e.target.value)}><option value="all">All platforms</option>{platforms.map(p=><option key={p.id} value={p.id}>{p.name}</option>)}</select></div>
     {loading&&<div className="loading-state">Loading accounts…</div>}{!loading&&error&&<p className="auth-error" role="alert">{error}</p>}{!loading&&!error&&!filtered.length&&<div className="empty-state">No accounts match the current filters.</div>}
     {!loading&&!error&&!!filtered.length&&<div className="data-table-wrap"><table className="data-table"><thead><tr><th>Name</th><th>Business</th><th>Platform</th><th>Handle</th><th>Contact</th><th>Status</th></tr></thead><tbody>{filtered.map(a=><tr key={a.id}><td><strong>{a.name}</strong></td><td>{businesses.find(b=>b.id===a.business_id)?.name||"—"}</td><td>{a.platform?.[0]?.name||"—"}</td><td>{a.handle||"—"}</td><td>{a.contact_email||"—"}</td><td><span className={`status-badge status-${a.status}`}>{a.status}</span></td></tr>)}</tbody></table></div>}
   </section>;
