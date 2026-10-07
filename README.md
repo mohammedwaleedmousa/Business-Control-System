@@ -6,7 +6,7 @@ Internal business management system for **Genan Boutique** and **Flamingo Park**
 
 - **Overall:** IN PROGRESS
 - **Current Phase:** Phase 4 — Core BCS
-- **Last Completed Task:** P5.3 Digital Assets
+- **Last Completed Task:** P5.4 Accounts
 
 ## Stack
 
@@ -68,7 +68,7 @@ Internal business management system for **Genan Boutique** and **Flamingo Park**
 - [x] P5.1 Dashboard
 - [x] P5.2 Business management
 - [ ] P5.3 Assets
-- [ ] P5.4 Accounts
+- [x] P5.4 Accounts
 - [ ] P5.5 Devices
 - [ ] P5.6 Users
 - [ ] P5.7 Activity/Audit
@@ -223,3 +223,7 @@ P5.2 adds the authenticated Businesses module with registry search, active/inact
 ## Digital Assets
 
 P5.3 expands the Digital Assets module with business-aware search and filtering, status filtering, and admin-only asset creation. The module stores operational metadata only; secret values remain outside BCS.
+
+## Accounts
+
+P5.4 expands Accounts with business and platform context, search and status/business filters, and admin-only account creation. Authentication secrets remain outside BCS; the account registry contains operational metadata only.
