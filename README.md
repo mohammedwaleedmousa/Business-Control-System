@@ -6,7 +6,7 @@ Internal business management system for **Genan Boutique** and **Flamingo Park**
 
 - **Overall:** IN PROGRESS
 - **Current Phase:** Phase 3 — Auth & Permissions
-- **Last Completed Task:** P3.1 Authentication
+- **Last Completed Task:** P3.2 User profiles
 
 ## Stack
 
@@ -50,7 +50,7 @@ Internal business management system for **Genan Boutique** and **Flamingo Park**
 
 ### Phase 3 — Auth & Permissions
 - [x] P3.1 Authentication
-- [ ] P3.2 User profiles
+- [x] P3.2 User profiles
 - [ ] P3.3 Roles
 - [ ] P3.4 Permissions
 - [ ] P3.5 Business isolation
@@ -155,6 +155,11 @@ Initial social platforms: Instagram, Facebook, TikTok, WhatsApp, X, YouTube.
 | P2.4 RLS | Complete |
 | P2.5 Indexes/constraints | Complete |
 | P3.1 Authentication | Complete |
+| P3.2 User profiles | Complete |
+
+## User Profiles
+
+P3.2 provisions a BCS profile automatically when a new Supabase Auth user is created. The profile stores only the user's BCS identity metadata (`full_name`, `role`, and `status`). The React application loads the authenticated user's profile from `public.profiles` and does not store passwords or authentication secrets in the profile table.
 
 ## Authentication
 
