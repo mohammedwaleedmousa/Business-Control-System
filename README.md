@@ -6,12 +6,12 @@ Internal business management system for **Genan Boutique** and **Flamingo Park**
 
 - **Overall:** IN PROGRESS
 - **Current Phase:** Phase 1 — Architecture
-- **Last Completed Task:** P1.1 Framework + TypeScript foundation
+- **Last Completed Task:** P1.2 React project structure
 
 ## Stack
 
-- Next.js
-- React
+- React 19
+- Vite
 - TypeScript
 - Supabase (planned)
 - UI system (planned)
@@ -27,7 +27,7 @@ Internal business management system for **Genan Boutique** and **Flamingo Park**
 
 ### Phase 1 — Architecture
 - [x] P1.1 Framework + TypeScript
-- [ ] P1.2 Project structure
+- [x] P1.2 Project structure
 - [ ] P1.3 Routing
 - [ ] P1.4 UI system
 - [ ] P1.5 Environment/config architecture
@@ -117,4 +117,5 @@ BCS may store operational metadata and a secure Bitwarden item reference. Secret
 | P0.3 .gitignore | Complete |
 | P0.4 .env.example | Complete |
 | P0.5 Initial project configuration | Complete |
-| P1.1 Framework + TypeScript foundation | Complete |
+| P1.1 Framework + TypeScript | Complete |
+| P1.2 React project structure | Complete |
