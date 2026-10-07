@@ -36,8 +36,8 @@ export function DevicesPage({ canManage, userId, role }: { canManage: boolean; u
   const userMap=useMemo(()=>new Map(users.map(u=>[u.id,u])),[users]);
   const filtered=devices.filter(d=>{const q=search.trim().toLowerCase();return (!q||[d.name,d.serial_number,d.phone_number,d.whatsapp_number,userMap.get(d.assigned_user_id??"")?.full_name].some(v=>v?.toLowerCase().includes(q)))&&(custody==="all"||d.custody_status===custody)});
 
-  function reset(){setForm({business_id:businesses[0]?.id??"",name:"",device_type:"iPhone",serial_number:"",assigned_user_id:null,custody_status:"not_assigned",handover_date:null,return_date:null,handover_return_notes:"",phone_number:"",whatsapp_number:""});setCredentials(emptyCredentials);setEditing(null);setSaveError("")}
-  function startEdit(d:Device){setEditing(d.id);setShowForm(true);setForm({...d});setCredentials(emptyCredentials);setSaveError("")}
+  function reset(){setForm({business_id:businesses[0]?.name??"",name:"",device_type:"iPhone",serial_number:"",assigned_user_id:"",custody_status:"not_assigned",handover_date:null,return_date:null,handover_return_notes:"",phone_number:"",whatsapp_number:""});setCredentials(emptyCredentials);setEditing(null);setSaveError("")}
+  function startEdit(d:Device){setEditing(d.id);setShowForm(true);setForm({...d,business_id:businessMap.get(d.business_id)?.name??d.business_id,assigned_user_id:d.assigned_user_id?userMap.get(d.assigned_user_id)?.full_name??d.assigned_user_id:""});setCredentials(emptyCredentials);setSaveError("")}
 
   async function save(e:FormEvent){e.preventDefault();if(!supabase||!canManage)return;setSaving(true);setSaveError("");
     const businessText=form.business_id.trim();
