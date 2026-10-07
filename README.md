@@ -6,7 +6,7 @@ Internal business management system for **Genan Boutique** and **Flamingo Park**
 
 - **Overall:** IN PROGRESS
 - **Current Phase:** Phase 4 — Core BCS
-- **Last Completed Task:** P5.1 Dashboard
+- **Last Completed Task:** P5.2 Business management
 
 ## Stack
 
@@ -66,7 +66,7 @@ Internal business management system for **Genan Boutique** and **Flamingo Park**
 
 ### Phase 5 — UI
 - [x] P5.1 Dashboard
-- [ ] P5.2 Business management
+- [x] P5.2 Business management
 - [ ] P5.3 Assets
 - [ ] P5.4 Accounts
 - [ ] P5.5 Devices
@@ -215,3 +215,7 @@ P4.7 connects the Bitwarden reference registry to the authenticated application.
 ## Dashboard
 
 P5.1 replaces the dashboard placeholder with an authenticated operational overview. It shows business, account, digital asset, device, platform, and activity counts, plus the seeded business registry. All data is read through the existing Supabase RLS policies.
+
+## Business Management
+
+P5.2 adds the authenticated Businesses module with registry search, active/inactive filtering, status visibility, and admin-only business creation. Creation is enforced by the existing Supabase authorization policy; non-admin users receive a read-only registry.
