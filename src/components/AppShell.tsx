@@ -15,6 +15,13 @@ const icons: Record<string, string> = {
   "/accounts": "M4 6h16v12H4zM8 10h8M8 14h5",
 };
 
+const roleLabels: Record<string, string> = {
+  admin: "مسؤول إداري",
+  manager: "مدير",
+  operator: "مشغّل",
+  viewer: "مستخدم للعرض",
+};
+
 export function AppShell({ children, currentPath = "/devices", userName, role, onNavigate, onSignOut }: AppShellProps) {
   const authenticated = Boolean(userName);
   function go(path: string) {
@@ -27,15 +34,15 @@ export function AppShell({ children, currentPath = "/devices", userName, role, o
 
   return (
     <div className={authenticated ? "app-shell authenticated" : "app-shell"}>
-      <aside className="sidebar">
+      <aside className="sidebar" dir="rtl">
         <div className="sidebar-brand">
-          <div className="brand-symbol">B</div>
-          <div><strong>BCS</strong><span>Business Control System</span></div>
+          <div className="brand-symbol">ب</div>
+          <div><strong>نظام التحكم بالأعمال</strong><span>إدارة الأعمال الداخلية</span></div>
         </div>
         {authenticated && (
           <>
-            <div className="sidebar-label">Workspace</div>
-            <nav className="sidebar-nav" aria-label="Primary">
+            <div className="sidebar-label">مساحة العمل</div>
+            <nav className="sidebar-nav" aria-label="التنقل الرئيسي">
               {routes.map((route) => (
                 <button key={route.path} className={route.path === currentPath ? "sidebar-link active" : "sidebar-link"} onClick={() => go(route.path)}>
                   <svg viewBox="0 0 24 24" aria-hidden="true"><path d={icons[route.path]} /></svg>
@@ -45,18 +52,18 @@ export function AppShell({ children, currentPath = "/devices", userName, role, o
             </nav>
             <div className="sidebar-spacer" />
             <div className="sidebar-user">
-              <div className="avatar">{(userName || "U").charAt(0).toUpperCase()}</div>
-              <div className="user-meta"><strong>{userName}</strong><span>{role}</span></div>
-              <button className="signout-icon" onClick={onSignOut} aria-label="Sign out">↗</button>
+              <div className="avatar">{(userName || "م").charAt(0).toUpperCase()}</div>
+              <div className="user-meta"><strong>{userName}</strong><span>{roleLabels[role ?? ""] ?? role ?? "مستخدم"}</span></div>
+              <button className="signout-icon" onClick={onSignOut} aria-label="تسجيل الخروج">↗</button>
             </div>
           </>
         )}
       </aside>
       <div className="main-shell">
         {authenticated && (
-          <header className="topbar">
-            <div className="breadcrumb"><span>BCS</span><b>/</b><strong>{routes.find((r) => r.path === currentPath)?.label ?? "BCS"}</strong></div>
-            <div className="topbar-status"><span className="live-dot" /> System operational</div>
+          <header className="topbar" dir="rtl">
+            <div className="breadcrumb"><span>الرئيسية</span><b>/</b><strong>{routes.find((route) => route.path === currentPath)?.label ?? "الرئيسية"}</strong></div>
+            <div className="topbar-status"><span className="live-dot" /> النظام يعمل بشكل طبيعي</div>
           </header>
         )}
         <main className="app-content">{children}</main>
