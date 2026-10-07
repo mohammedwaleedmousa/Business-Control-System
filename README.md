@@ -6,7 +6,7 @@ Internal business management system for **Genan Boutique** and **Flamingo Park**
 
 - **Overall:** IN PROGRESS
 - **Current Phase:** Phase 4 — Core BCS
-- **Last Completed Task:** P4.7 Bitwarden references
+- **Last Completed Task:** P5.1 Dashboard
 
 ## Stack
 
@@ -65,7 +65,7 @@ Internal business management system for **Genan Boutique** and **Flamingo Park**
 - [x] P4.7 Bitwarden references
 
 ### Phase 5 — UI
-- [ ] P5.1 Dashboard
+- [x] P5.1 Dashboard
 - [ ] P5.2 Business management
 - [ ] P5.3 Assets
 - [ ] P5.4 Accounts
@@ -166,6 +166,7 @@ Initial social platforms: Instagram, Facebook, TikTok, WhatsApp, X, YouTube.
 | P4.5 Social Platforms | Complete |
 | P4.6 Devices | Complete |
 | P4.7 Bitwarden references | Complete |
+| P5.1 Dashboard | Complete |
 
 ## Build Verification
 
@@ -210,3 +211,7 @@ P4.6 connects the device registry to the authenticated application. Devices are 
 ## Bitwarden References
 
 P4.7 connects the Bitwarden reference registry to the authenticated application. BCS displays only vault item metadata and references; passwords, API keys, tokens, private keys, recovery codes, and other secret values remain outside BCS in Bitwarden.
+
+## Dashboard
+
+P5.1 replaces the dashboard placeholder with an authenticated operational overview. It shows business, account, digital asset, device, platform, and activity counts, plus the seeded business registry. All data is read through the existing Supabase RLS policies.
