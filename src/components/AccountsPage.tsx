@@ -8,7 +8,7 @@ type Account = {
   handle: string | null;
   contact_email: string | null;
   status: "active" | "inactive" | "suspended";
-  platform: { name: string } | null;
+  platform: { name: string }[] | null;
 };
 
 export function AccountsPage() {
@@ -58,7 +58,7 @@ export function AccountsPage() {
               {accounts.map((account) => (
                 <tr key={account.id}>
                   <td><strong>{account.name}</strong></td>
-                  <td>{account.platform?.name || "—"}</td>
+                  <td>{account.platform?.[0]?.name || "—"}</td>
                   <td>{account.handle || "—"}</td>
                   <td>{account.contact_email || "—"}</td>
                   <td><span className={`status-badge status-${account.status}`}>{account.status}</span></td>
