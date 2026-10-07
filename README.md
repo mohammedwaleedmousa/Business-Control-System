@@ -265,3 +265,19 @@ P5.4 expands Accounts with business and platform context, search and status/busi
 - Black, charcoal, and gray are reserved for text, borders, controls, hierarchy, and status treatment.
 - White text is used only on intentionally black primary buttons or dark status elements.
 - Form controls share the same 42px height and consistent visual treatment.
+
+
+## Enterprise management expansion — 2026-10-07
+
+The BCS workspace has been expanded beyond basic asset/account control to cover the major operational domains expected in a larger electronic business management platform:
+
+- Organization: locations, departments, users, business membership
+- Relationships: contacts and vendors
+- Work management: projects, tasks, priorities, deadlines, ownership
+- Operations: inventory, inventory movements, devices, digital assets
+- Commercial/service control: subscriptions, renewals, costs, owners
+- Information governance: documents and secure Bitwarden references
+- Risk/control: incidents, approvals, activity/audit records
+- Core administration: businesses, social platforms, settings
+
+New operational tables are protected with RLS and business-scoped read policies; administrative write access is restricted to BCS admins. Secrets remain outside BCS and are represented only by secure Bitwarden references.
